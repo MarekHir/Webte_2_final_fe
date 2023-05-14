@@ -10,6 +10,7 @@
     "format": "prettier --write src"
   },
   "dependencies": {
+    "@vee-validate/yup": "^4.9.3",
     "axios": "^1.4.0",
     "pinia": "^2.0.36",
     "vee-validate": "^4.9.3",
