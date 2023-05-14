@@ -2,10 +2,6 @@
 import {useI18n} from "vue-i18n";
 
 const { t } = useI18n({ useScope: 'global' });
-const rules = [
-    (v) => !!v || t('login.error.email_required'),
-    (v) => /.+@.+/.test(v) || t('login.error.email_invalid'),
-]
 
 const onSubmit = () => {
     console.log('submit');
@@ -24,7 +20,7 @@ const onSubmit = () => {
                         <v-container>
                             <v-form @submit.prevent="onSubmit">
                                 <v-row class="py-1">
-                                    <v-text-field :rules="rules" class="ma-auto" :label="t('login.email')"></v-text-field>
+                                    <v-text-field class="ma-auto" :label="t('login.email')"></v-text-field>
                                 </v-row>
                                 <v-row class="py-1">
                                     <v-text-field class="ma-auto" :label="t('login.password')"></v-text-field>
