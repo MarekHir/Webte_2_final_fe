@@ -1,10 +1,16 @@
 <script setup>
 import {useI18n} from "vue-i18n";
+import { login } from "@/api/requests";
+import {ref} from "vue";
+import router from "@/router";
 
 const { t } = useI18n({ useScope: 'global' });
+const email = ref('');
+const password = ref('');
 
 const onSubmit = () => {
-    console.log('submit');
+    if (login(email.value, password.value) === true)
+        router.push({name: 'Home'});
 }
 
 </script>
@@ -18,15 +24,15 @@ const onSubmit = () => {
                     </v-card-title>
                     <v-card-item>
                         <v-container>
-                            <v-form @submit.prevent="onSubmit">
+                            <v-form @submit.prevent="onSubmit" validate-on="input">
                                 <v-row class="py-1">
-                                    <v-text-field class="ma-auto" :label="t('login.email')"></v-text-field>
+                                    <v-text-field v-model="email" class="ma-auto" :label="t('login.email')"></v-text-field>
                                 </v-row>
                                 <v-row class="py-1">
-                                    <v-text-field class="ma-auto" :label="t('login.password')"></v-text-field>
+                                    <v-text-field v-model="password" type="password" class="ma-auto" :label="t('login.password')"></v-text-field>
                                 </v-row>
                                 <v-row class="py-1">
-                                    <v-btn type="submit" class="ma-auto" color="primary">{{ t('login.login_button') }}</v-btn>
+                                    <v-btn type="submit" class="ma-auto" color="primary">{{ t('login.submit') }}</v-btn>
                                 </v-row>
                             </v-form>
                         </v-container>
@@ -37,38 +43,4 @@ const onSubmit = () => {
     </v-container>
 </template>
 <style scoped>
-.main_container {
-    font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
-    text-align: center;
-    padding: 50px;
-}
-
-.login-form {
-    display: inline-block;
-    text-align: left;
-    padding: 20px;
-    border: 1px solid #ccc;
-    background-color: #fff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.login-form input[type="text"],
-.login-form input[type="password"] {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-.login-form input[type="submit"] {
-    width: 100%;
-    padding: 10px;
-    background-color: #4CAF50;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
 </style>

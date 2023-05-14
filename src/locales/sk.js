@@ -5,5 +5,6 @@ export default {
         password: 'Heslo',
         login_button: 'Prihlásiť sa',
     },
-    $vuetify: {},
+    $vuetify: {
+    },
 }

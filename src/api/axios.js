@@ -1,22 +1,16 @@
 import axios from "axios";
 
+
+const url = import.meta.env.DEV ? 'http://0.0.0.0:80' : 'https://site103.webte.fei.stuba.sk/final';
+
 const api = axios.create({
-    baseURL: "http://localhost:8080/api",
+    baseURL: url + '/api',
 });
 
-api.interceptors.request.use(
-    (config) => {
-        const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from wherever you store it
+api.defaults.withCredentials = true;
 
-        if (authToken) {
-            config.headers['Authorization'] = `Bearer ${authToken}`;
-        }
-
-        return config;
-    },
-    (error) => {
-        return Promise.reject(error);
-    }
-);
+export const createCookie = async () => {
+    await api.get( url + '/sanctum/csrf-cookie');
+}
 
 export default api;

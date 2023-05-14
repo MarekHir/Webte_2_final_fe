@@ -3,11 +3,21 @@ export default {
         title: 'Login',
         email: 'Email',
         password: 'Password',
-        login_button: 'Login',
+        submit: 'Login',
         error: {
             email_required: 'Email is required',
             email_invalid: 'Email is invalid',
         },
     },
-    $vuetify: {}
+    registration: {
+        title: 'Registration',
+        name: 'Name',
+        email: 'Email',
+        password: 'Password',
+        password_confirmation: 'Password confirmation',
+        submit: 'Register',
+    },
+    $vuetify: {
+        close: 'Close',
+    }
 }
