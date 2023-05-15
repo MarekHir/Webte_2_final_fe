@@ -1,46 +1,23 @@
+import { en } from 'vuetify/locale'
+import login from "@/locales/views/auth/login/en";
+import registration from "@/locales/views/auth/registration/en";
+import dashboard from "@/locales/layouts/dashboard/en";
+import teacher from "@/locales/views/teacher/en";
+
 export default {
-    login: {
-        title: 'Login',
-        email: 'Email',
-        password: 'Password',
-        submit: 'Login',
-        error: {
-            email_required: 'Email is required',
-            email_invalid: 'Email is invalid',
-        },
-        registration: {
-            text: 'Don\'t have an account?',
-            link: 'Click here to register',
-        }
-    },
-    registration: {
-        title: 'Registration',
-        first_name: 'First name',
-        surname: 'Surname',
-        role: 'Account type',
-        roles: {
-            student: 'Student',
-            teacher: 'Teacher',
-        },
-        email: 'Email',
-        password: 'Password',
-        password_confirmation: 'Password confirmation',
-        submit: 'Register',
-        login: {
-            text: 'Already have an account?',
-            link: 'Click here to login',
-        }
-    },
+    login: login,
+    registration: registration,
     language: {
         title: 'Switch to {lang}',
         en: 'English',
         sk: 'Slovak',
     },
-    dashboard: {
-        menu: {
-            title: 'Menu',
-            instructions: 'Instructions',
-            logout: 'Logout',
+    dashboard: dashboard,
+    user: {
+        role: {
+            admin: 'Admin',
+            teacher: 'Teacher',
+            student: 'Student',
         }
     },
     error: {
@@ -51,7 +28,8 @@ export default {
             text: 'The page you are looking for does not exist.',
         },
     },
+    teacher: teacher,
     $vuetify: {
-        close: 'Close',
+        ...en,
     }
 }
