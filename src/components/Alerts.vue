@@ -28,7 +28,7 @@ const dismissAlert = (alert) => {
     position: absolute;
     top: 10px;
     left: 50%;
-    z-index: 10;
+    z-index: 1000;
     transform: translateX(-50%);
     width: 30%;
 }
