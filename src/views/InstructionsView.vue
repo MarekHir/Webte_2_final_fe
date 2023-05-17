@@ -1,12 +1,12 @@
 <script setup>
 
 import {useStateStore} from "@/stores/state";
+import {useI18n} from "vue-i18n";
+import DashboardTitle from "@/components/Dashboard/DashboardTitle.vue";
 
+const {t} = useI18n({useScope: 'global'});
 const store = useStateStore();
 </script>
 <template>
-    <h1>
-        Instructions
-    </h1>
-    <p>Is authenticated: {{store.isAuthenticated}}</p>
+  <DashboardTitle title_key="instructions.title"/>
 </template>
