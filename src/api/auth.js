@@ -1,15 +1,12 @@
 import api from "@/config/axios";
 import {useStateStore} from "@/stores/state";
 
-export const login = async (email, password) => {
+export const login = async (data) => {
     const store = useStateStore();
 
     let result = false;
     await api.get('/sanctum/csrf-cookie');
-    await api.post('/api/auth/login', {
-        email,
-        password
-    }).then(response => {
+    await api.post('/api/auth/login', data).then(response => {
         if (response.status === 200) {
             store.login(response.data.user);
             store.addAlert(response.data.message, 'success');

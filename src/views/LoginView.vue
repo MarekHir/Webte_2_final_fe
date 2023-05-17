@@ -1,16 +1,18 @@
 <script setup>
 import {useI18n} from "vue-i18n";
-import { login } from "@/api/auth";
+import {login} from "@/api/auth";
 import router from "@/router";
 
 import {useField, useForm} from "vee-validate";
 import * as yup from 'yup';
+import {useStateStore} from "@/stores/state";
 
 const {t} = useI18n({useScope: 'global'});
+const store = useStateStore();
 
 const schema = yup.object({
-    email: yup.string().email().required().min(6).max(30),
-    password: yup.string().required().min(6).max(30),
+    email: yup.string().email().required(),
+    password: yup.string().required(),
 });
 
 const {handleSubmit} = useForm({
@@ -20,17 +22,19 @@ const {handleSubmit} = useForm({
 const email = useField('email');
 const password = useField('password');
 
-function onInvalidSubmit({values, errors, results}) {
-    console.log(values); // current form values
-    console.log(errors); // a map of field names and their first error message
-    console.log(results); // a detailed map of field names and their validation results
+function onInvalidSubmit({errors}) {
+    if (errors == null || errors.length === 0)
+        return;
+
+    Object.keys(errors).forEach((field_key) => {
+        store.addAlert(errors[field_key], 'warning');
+    });
 }
 
-const onSubmit = handleSubmit( async (values) => {
-    console.log(values);
-    // let result = await login(email.value, password.value);
-    // if (result === true)
-    //     await router.push({name: 'Home'});
+const onSubmit = handleSubmit(async (values) => {
+    let result = await login(values);
+    if (result === true)
+        await router.push({name: 'Home'});
 }, onInvalidSubmit);
 
 </script>
@@ -47,8 +51,7 @@ const onSubmit = handleSubmit( async (values) => {
                             <form @submit.prevent="onSubmit">
                                 <v-row class="py-1">
                                     <v-text-field
-                                            v-model="email.value.value"
-                                            class="ma-auto"
+                                            v-model="email.value.value" class="ma-auto"
                                             :label="t('login.email')"
                                             :error-messages="email.errorMessage.value"
                                     ></v-text-field>
@@ -56,7 +59,7 @@ const onSubmit = handleSubmit( async (values) => {
                                 <v-row class="py-1">
                                     <v-text-field
                                             v-model="password.value.value" class="ma-auto"
-                                            :label="t('login.password')"
+                                            :label="t('login.password')" type="password"
                                             :error-messages="password.errorMessage.value"></v-text-field>
                                 </v-row>
                                 <v-row class="py-1">
