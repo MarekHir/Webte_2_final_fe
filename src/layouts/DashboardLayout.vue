@@ -16,6 +16,7 @@ import {storeToRefs} from "pinia";
 const {t} = useI18n({useScope: 'global'});
 const store = useStateStore();
 const {user} = storeToRefs(store);
+
 const handleLogout = async () => {
     let result = await logout();
     if (result === true)
@@ -24,7 +25,7 @@ const handleLogout = async () => {
 </script>
 
 <template>
-    <v-layout :full-height="true">
+    <v-layout :full-height="true" v-if="store.isAuthenticated">
         <v-navigation-drawer rail expand-on-hover>
             <v-list>
                 <v-list-item

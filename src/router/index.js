@@ -60,6 +60,7 @@ const router = createRouter({
         {
             path: '/teacher',
             redirect: HomeView,
+            name: 'Teacher',
             meta: {
                 layout: 'Dashboard',
                 allowed: ['teacher'],
@@ -77,8 +78,13 @@ const router = createRouter({
                 },
                 {
                     path: 'students',
-                    name: 'Students',
-                    component: () => import('../views/teacher/StudentsView.vue'),
+                    name: 'TeacherStudentsIndex',
+                    component: () => import('../views/teacher/students/IndexView.vue'),
+                },
+                {
+                    path: 'students/:id',
+                    name: 'TeacherStudentsShow',
+                    component: () => import('../views/teacher/students/ShowView.vue'),
                 },
                 {
                     path: 'students/exercises',
@@ -128,12 +134,15 @@ router.beforeEach((to, from, next) => {
     if (pageAuth && !store.isAuthenticated) {
         store.addAlert(t('error.unauthorized'), 'warning');
         next('/login');
+        return;
     }
 
     if(pageAllowed !== false && !store.userAllowed(pageAllowed)) {
         store.addAlert(t('error.forbidden'), 'warning');
         next('/');
+        return;
     }
+
     next();
 });
 
