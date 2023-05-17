@@ -10,7 +10,7 @@ import {useStateStore} from "@/stores/state";
 const {t} = useI18n({useScope: 'global'});
 const store = useStateStore();
 
-const schema = yup.object({
+const schema = yup.object().shape({
     email: yup.string().email().required(),
     password: yup.string().required(),
 });
