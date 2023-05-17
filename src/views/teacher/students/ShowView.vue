@@ -1,0 +1,47 @@
+<script setup>
+import {useI18n} from "vue-i18n";
+import {onMounted, ref} from "vue";
+import {getStudent} from "@/api/teacher";
+import {fullName} from "@/utils";
+import {useRoute} from "vue-router";
+
+const {t} = useI18n({useScope: 'global'});
+const data = ref(null);
+const route = useRoute();
+
+onMounted(async () => {
+    data.value = await getStudent(route.params.id)
+});
+
+</script>
+<template>
+    <v-card-title class="text-center">
+        <h1 class="text-h3">
+            {{ t('teacher.students.show.title', {name: fullName(data)}) }}
+        </h1>
+    </v-card-title>
+    <v-divider class="mt-2"/>
+    <v-card-item>
+        <v-container>
+            <template v-if="data != null">
+                <v-table>
+                    <thead>
+                    <tr>
+                        <th>{{ t('teacher.students.show.table_info.header.icon') }}</th>
+                        <th>{{ t('teacher.students.show.table_info.header.first_name') }}</th>
+                        <th>{{ t('teacher.students.show.table_info.header.surname') }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>{{ data.icon }}</td>
+                        <td>{{ data.first_name }}</td>
+                        <td>{{ data.surname }}</td>
+                    </tr>
+                    </tbody>
+                </v-table>
+            </template>
+        </v-container>
+    </v-card-item>
+    <v-divider class="w-75 ma-auto my-2"/>
+</template>

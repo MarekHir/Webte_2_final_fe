@@ -5,7 +5,7 @@ import en from "@/locales/en";
 
 export default createI18n({
     legacy: false,
-    locale: 'sk',
+    locale: 'en',
     fallbackLocale: 'en',
-    messages: {sk: sk, en: en},
+    messages: {sk, en},
 })
