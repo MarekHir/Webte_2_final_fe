@@ -15,6 +15,7 @@ export const useStateStore = defineStore('state', () => {
     })
     const user = ref({id: 1, first_name: 'Marek', surname: 'Hirschner', role: 'admin'});
     //
+    //{id: 2,first_name: 'Marek', surname: 'Hirschner', role: 'admin'}
 
     const isAuthenticated = computed(() => {
         return user.value != null;

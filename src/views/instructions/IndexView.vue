@@ -35,10 +35,10 @@ const goToShow = async (id) => {
         <v-table>
             <thead>
             <tr>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Indented for</th>
-                <th>Created by</th>
+                <th>{{t('instructions.index.description.name')}}</th>
+                <th>{{t('instructions.index.description.description')}}</th>
+                <th>{{t('instructions.index.description.for')}}</th>
+                <th>{{t('instructions.index.description.createdBy')}}</th>
             </tr>
             </thead>
             <tbody>
