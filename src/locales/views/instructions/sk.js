@@ -6,4 +6,10 @@ export default {
     index: index,
     show: show,
     edit: edit,
+    for_user_type: {
+        title: 'Pre',
+        all: 'Všetkých',
+        student: 'Študent',
+        teacher: 'Učiteľ',
+    },
 }

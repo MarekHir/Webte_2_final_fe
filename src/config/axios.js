@@ -1,7 +1,7 @@
 import axios from "axios";
 
 
-const url = import.meta.env.DEV ? 'http://127.0.0.1:80' : 'https://site103.webte.fei.stuba.sk/final';
+const url = import.meta.env.DEV ? 'http://localhost:8000' : 'https://site103.webte.fei.stuba.sk/final';
 
 const api = axios.create({
     baseURL: url,

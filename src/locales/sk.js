@@ -30,6 +30,18 @@ export default {
             text: 'Stránka, ktorú hľadáte, neexistuje.',
         },
     },
+    button: {
+        index: 'Späť na zoznam',
+        show: 'Zobraziť',
+        edit: 'Upraviť',
+        create: 'Vytvoriť',
+        delete: 'Odstrániť',
+        save: 'Uložiť',
+        close: 'Zatvoriť',
+    },
+    delete_modal: {
+        title: 'Ste si istí, že chcete túto položku odstrániť?',
+    },
     teacher: teacher,
     $vuetify: {
         ...sk,
