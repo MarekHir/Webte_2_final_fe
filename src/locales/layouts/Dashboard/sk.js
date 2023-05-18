@@ -8,7 +8,7 @@ export default {
         },
         teacher: {
             latex: 'Pridať súbor LaTeX',
-            exercise: 'Vytvoriť súbor cvičení',
+            exercise: 'Subory s cvičeniami',
             students: 'Študenti',
             student_exercises: 'Cvičenia pre študentov',
         },

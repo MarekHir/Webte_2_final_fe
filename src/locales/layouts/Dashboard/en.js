@@ -8,7 +8,7 @@ export default {
         },
         teacher: {
             latex: 'Add LaTeX file',
-            exercise: 'Create exercise set',
+            exercise: 'Exercises lists',
             students: 'Students',
             student_exercises: 'Student exercises',
         },

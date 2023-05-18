@@ -59,11 +59,11 @@ const handleLogout = async () => {
             <v-list-item v-if="store.isAdmin" :subtitle="t('user.role.teacher') + ':'"/>
             <v-list nav v-if="store.isTeacher">
                 <v-list-item
-                        to="/teacher/latex/new"
+                        to="/exercises_lists/new"
                         prepend-icon="mdi-file-plus"
                         :title="t('dashboard.menu.teacher.latex')"/>
                 <v-list-item
-                        to="/exercises_sets"
+                        to="/exercises_lists"
                         prepend-icon="mdi-book-plus-multiple"
                         :title="t('dashboard.menu.teacher.exercise')"/>
                 <v-list-item

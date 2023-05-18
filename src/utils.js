@@ -1,6 +1,5 @@
 import {getInstruction} from "@/api/instructions";
 import {useStateStore} from "@/stores/state";
-import {getExercisesSet} from "@/api/exercises_sets";
 
 export const fullName = (user) => {
     return user ? user.first_name + ' ' + user.surname : '';

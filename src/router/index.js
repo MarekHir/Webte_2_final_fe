@@ -71,7 +71,7 @@ const router = createRouter({
                 {
                     path: 'latex/new',
                     name: 'AddLatexFile',
-                    component: () => import('../views/teacher/latex/NewView.vue'),
+                    component: () => import('../views/exercises_lists/EditView.vue'),
                 },
                 {
                     path: 'students',
@@ -96,7 +96,7 @@ const router = createRouter({
             ]
         },
         {
-            path: '/exercises_sets',
+            path: '/exercises_lists',
             meta: {
                 layout: 'Dashboard',
                 allowed: ['teacher'],
@@ -104,26 +104,26 @@ const router = createRouter({
             children: [
                 {
                     path: '',
-                    name: 'IndexExercisesSets',
-                    component: () => import('../views/exercises_sets/IndexView.vue'),
+                    name: 'IndexExercisesLists',
+                    component: () => import('../views/exercises_lists/IndexView.vue'),
                 },
                 {
                     path: 'new',
-                    name: 'NewExercisesSet',
-                    component: () => import('../views/exercises_sets/EditView.vue'),
+                    name: 'NewExercisesList',
+                    component: () => import('../views/exercises_lists/EditView.vue'),
                 },
                 {
                     path: ':id/edit',
-                    name: 'EditExercisesSet',
-                    component: () => import('../views/exercises_sets/EditView.vue'),
+                    name: 'EditExercisesList',
+                    component: () => import('../views/exercises_lists/EditView.vue'),
                     meta: {
                         allowed: ['owner']
                     }
                 },
                 {
                     path: ':id',
-                    name: 'ShowExercisesSet',
-                    component: () => import('../views/exercises_sets/ShowView.vue'),
+                    name: 'ShowExercisesList',
+                    component: () => import('../views/exercises_lists/ShowView.vue'),
                 }
             ],
         },
