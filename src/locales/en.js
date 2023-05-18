@@ -30,6 +30,18 @@ export default {
             text: 'The page you are looking for does not exist.',
         },
     },
+    button: {
+        index: 'Back to list',
+        show: 'Show',
+        edit: 'Edit',
+        create: 'Create',
+        delete: 'Delete',
+        save: 'Save',
+        close: 'Close',
+    },
+    delete_modal: {
+        title: 'Are you sure you want to delete this item?',
+    },
     teacher: teacher,
     $vuetify: {
         ...en,

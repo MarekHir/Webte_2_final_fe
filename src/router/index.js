@@ -1,6 +1,7 @@
 import {createRouter, createWebHistory} from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import {useStateStore} from "@/stores/state";
+import {policyManager} from "@/utils";
 import i18n from "@/config/i18n";
 
 
@@ -14,7 +15,8 @@ const router = createRouter({
             meta: {
                 layout: 'Dashboard'
             }
-        }, {
+        },
+        {
             path: '/login',
             name: 'Login',
             component: () => import('../views/LoginView.vue'),
@@ -100,11 +102,40 @@ const router = createRouter({
         },
         {
             path: '/instructions',
-            name: 'Instructions',
-            component: () => import('../views/InstructionsView.vue'),
             meta: {
                 layout: 'Dashboard'
-            }
+            },
+            children: [
+                {
+                    path: '',
+                    name: 'IndexInstructions',
+                    component: () => import('../views/instructions/IndexView.vue'),
+                },
+                {
+                    path: 'new',
+                    name: 'NewInstruction',
+                    component: () => import('../views/instructions/EditView.vue'),
+                    meta: {
+                        allowed: ['teacher']
+                    }
+                },
+                {
+                    path: ':id/edit',
+                    name: 'EditInstruction',
+                    component: () => import('../views/instructions/EditView.vue'),
+                    meta: {
+                        allowed: ['owner']
+                    }
+                },
+                {
+                    path: ':id',
+                    name: 'ShowInstruction',
+                    component: () => import('../views/instructions/ShowView.vue'),
+                    meta: {
+                        allowed: ['student_special_instructions', 'teacher']
+                    }
+                },
+            ],
         },
         {
             path: '/NotFound',
@@ -125,7 +156,7 @@ const router = createRouter({
     ]
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
     const store = useStateStore();
     const {t} = i18n.global;
 
@@ -137,7 +168,7 @@ router.beforeEach((to, from, next) => {
         return;
     }
 
-    if(pageAllowed !== false && !store.userAllowed(pageAllowed)) {
+    if (pageAllowed !== false && !await policyManager(pageAllowed, to.name, to.params.id)) {
         store.addAlert(t('error.forbidden'), 'warning');
         next('/');
         return;

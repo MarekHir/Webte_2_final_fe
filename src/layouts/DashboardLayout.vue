@@ -15,7 +15,7 @@ import {storeToRefs} from "pinia";
 
 const {t} = useI18n({useScope: 'global'});
 const store = useStateStore();
-const {user} = storeToRefs(store);
+const {user, menuHidden} = storeToRefs(store);
 
 const handleLogout = async () => {
     let result = await logout();
@@ -26,7 +26,7 @@ const handleLogout = async () => {
 
 <template>
     <v-layout :full-height="true" v-if="store.isAuthenticated">
-        <v-navigation-drawer rail expand-on-hover>
+        <v-navigation-drawer v-model:temporary="menuHidden" rail expand-on-hover>
             <v-list>
                 <v-list-item
                         :prepend-avatar="store.userPicture"
@@ -85,9 +85,9 @@ const handleLogout = async () => {
                 </v-list>
             </template>
         </v-navigation-drawer>
-        <v-main>
-            <div class="pa-4 fill-height">
-                <v-card height="100%" class="pa-4">
+        <v-main scrollable>
+            <div class="pa-4 fill-height overflow-y-auto">
+                <v-card class="pa-4" style="min-height: 100%">
                     <slot></slot>
                 </v-card>
             </div>

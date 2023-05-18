@@ -3,28 +3,25 @@ import {useI18n} from "vue-i18n";
 import {onMounted, ref} from "vue";
 import {getStudents} from "@/api/teacher";
 import router from "@/router";
+import DashboardTitle from "@/components/Dashboard/DashboardTitle.vue";
 
 const {t} = useI18n({useScope: 'global'});
 const data = ref([]);
 
 onMounted(async () => {
     data.value = await getStudents()
+    await router.isReady();
 });
 
 const goToStudent = async (id) => {
-    console.log(id)
     await router.push({name: 'TeacherStudentsShow', params: {id: id}}).catch(() => {
-        console.log('Error while routing to TeacherStudentsShow')
+        console.log('Error while routing to TeacherStudentsShow') // TODO: Add error handling
     })
 }
 
 </script>
 <template>
-    <v-card-title class="text-center">
-        <h1 class="text-h3">
-            {{ t('teacher.students.index.title') }}
-        </h1>
-    </v-card-title>
+    <DashboardTitle title_key="teacher.students.index.title"/>
     <v-divider class="mt-2"/>
     <v-card-item>
         <v-container>

@@ -3,8 +3,17 @@ import {defineStore} from 'pinia'
 
 export const useStateStore = defineStore('state', () => {
     const alerts = ref([])
-    const user = ref({first_name: 'Marek', surname: 'Hirschner', role: 'admin'});
-    //
+    const menuHidden = ref(false);
+    const btn_colors = ref({
+        index: 'grey',
+        show: 'blue',
+        edit: 'warning',
+        create: 'success',
+        delete: 'error',
+        save: 'primary',
+        close: 'dark'
+    })
+    const user = ref({id: 2,first_name: 'Marek', surname: 'Hirschner', role: 'admin'});
     //
 
     const isAuthenticated = computed(() => {
@@ -86,7 +95,9 @@ export const useStateStore = defineStore('state', () => {
         login,
         fullName,
         isTeacher,
+        menuHidden,
         isStudent,
+        btn_colors,
         isAdmin,
         userIcon,
         userPicture,

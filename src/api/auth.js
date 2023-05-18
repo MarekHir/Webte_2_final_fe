@@ -38,7 +38,6 @@ export const logout = async () => {
             result = false;
         }
     }).catch(error => {
-        console.log(error);
         store.addAlert(error.message, 'error');
         result = false;
     });
