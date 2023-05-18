@@ -13,6 +13,7 @@ import {storeToRefs} from "pinia";
 import CrudButton from "@/components/buttons/CrudButton.vue";
 import * as yup from "yup";
 import {useField, useForm} from "vee-validate";
+import {onInvalidSubmit} from "@/utils";
 
 const {t} = useI18n({useScope: 'global'});
 const store = useStateStore();
@@ -51,15 +52,6 @@ const for_user_type = useField('for_user_type');
 const description = useField('description');
 const markdown = useField('markdown');
 
-function onInvalidSubmit({errors}) {
-    if (errors == null || errors.length === 0)
-        return;
-
-    Object.keys(errors).forEach((field_key) => {
-        store.addAlert(errors[field_key], 'warning');
-    });
-}
-
 const onSubmit = handleSubmit(async (values) => {
     let result;
 
@@ -73,7 +65,7 @@ const onSubmit = handleSubmit(async (values) => {
         result = await patchInstruction(values, instruction.value.id);
     }
 
-    if (result === true)
+    if (result !== false)
         menuHidden.value = false;
         await router.push({name: 'ShowInstruction', params: {id: result.id}}).catch(() => {
             console.log('Error while routing to ShowInstruction') // TODO: Add error handling

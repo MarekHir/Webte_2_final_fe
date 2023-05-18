@@ -1,9 +1,20 @@
 import {getInstruction} from "@/api/instructions";
 import {useStateStore} from "@/stores/state";
+import {getExercisesSet} from "@/api/exercises_sets";
 
 export const fullName = (user) => {
     return user ? user.first_name + ' ' + user.surname : '';
 };
+
+export const onInvalidSubmit = ({errors}) => {
+    const store = useStateStore();
+    if (errors == null || errors.length === 0)
+        return;
+
+    Object.keys(errors).forEach((field_key) => {
+        store.addAlert(errors[field_key], 'warning');
+    });
+}
 
 const getDataForPath = async (path_name, id) => {
     let data;
@@ -11,6 +22,9 @@ const getDataForPath = async (path_name, id) => {
         case 'ShowInstruction':
         case 'EditInstruction':
             data = await getInstruction(id).catch(() => null); // TODO: handle error
+            break;
+        case 'EditExercisesSet':
+            data = await getExercisesSet(id).catch(() => null); // TODO: handle error
             break;
 
     }

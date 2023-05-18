@@ -4,11 +4,13 @@ import registration from "@/locales/views/auth/registration/en";
 import dashboard from "@/locales/layouts/dashboard/en";
 import teacher from "@/locales/views/teacher/en";
 import instructions from '@/locales/views/instructions/en'
+import exercises_set from '@/locales/views/exercises_set/en'
 
 export default {
     login: login,
     registration: registration,
     instructions: instructions,
+    exercises_set: exercises_set,
     language: {
         title: 'Switch to {lang}',
         en: 'English',

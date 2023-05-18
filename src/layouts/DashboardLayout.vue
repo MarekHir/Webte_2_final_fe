@@ -63,7 +63,7 @@ const handleLogout = async () => {
                         prepend-icon="mdi-file-plus"
                         :title="t('dashboard.menu.teacher.latex')"/>
                 <v-list-item
-                        to="/teacher/exercise/create"
+                        to="/exercises_sets"
                         prepend-icon="mdi-book-plus-multiple"
                         :title="t('dashboard.menu.teacher.exercise')"/>
                 <v-list-item

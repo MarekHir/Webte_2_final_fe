@@ -74,11 +74,6 @@ const router = createRouter({
                     component: () => import('../views/teacher/latex/NewView.vue'),
                 },
                 {
-                    path: 'exercise/create',
-                    name: 'CreateExerciseSet',
-                    component: () => import('../views/teacher/CreateExerciseSetView.vue'),
-                },
-                {
                     path: 'students',
                     name: 'TeacherStudentsIndex',
                     component: () => import('../views/teacher/students/IndexView.vue'),
@@ -99,6 +94,38 @@ const router = createRouter({
                     component: () => import('../views/teacher/StudentExercisesView.vue'),
                 },
             ]
+        },
+        {
+            path: '/exercises_sets',
+            meta: {
+                layout: 'Dashboard',
+                allowed: ['teacher'],
+            },
+            children: [
+                {
+                    path: '',
+                    name: 'IndexExercisesSets',
+                    component: () => import('../views/exercises_sets/IndexView.vue'),
+                },
+                {
+                    path: 'new',
+                    name: 'NewExercisesSet',
+                    component: () => import('../views/exercises_sets/EditView.vue'),
+                },
+                {
+                    path: ':id/edit',
+                    name: 'EditExercisesSet',
+                    component: () => import('../views/exercises_sets/EditView.vue'),
+                    meta: {
+                        allowed: ['owner']
+                    }
+                },
+                {
+                    path: ':id',
+                    name: 'ShowExercisesSet',
+                    component: () => import('../views/exercises_sets/ShowView.vue'),
+                }
+            ],
         },
         {
             path: '/instructions',

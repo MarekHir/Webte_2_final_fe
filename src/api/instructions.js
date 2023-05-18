@@ -5,7 +5,7 @@ export const getInstructions = async () => {
     const store = useStateStore();
     let result = [];
 
-    await api.get('/api/teacher/instructions')
+    await api.get('/api/instructions')
         .then((response) => {
             result = response.data;
         }).catch((error) => {
@@ -19,7 +19,7 @@ export const getInstruction = async (id) => {
     const store = useStateStore();
     let result = null;
 
-    await api.get('/api/teacher/instructions/' + id)
+    await api.get('/api/instructions/' + id)
         .then((response) => {
             result = response.data;
         }).catch((error) => {
@@ -33,7 +33,7 @@ export const patchInstruction = async (data, id) => {
     const store = useStateStore();
     let result = null;
 
-    await api.patch('/api/teacher/instructions/' + id, data)
+    await api.patch('/api/instructions/' + id, data)
         .then((response) => {
             result = response.data;
         }).catch((error) => {
@@ -47,7 +47,7 @@ export const createInstruction = async (data) => {
     const store = useStateStore();
     let result = null;
 
-    await api.post('/api/teacher/instructions', data)
+    await api.post('/api/instructions', data)
         .then((response) => {
             result = response.data;
         }).catch((error) => {
@@ -61,7 +61,7 @@ export const deleteInstruction = async (id) => {
     const store = useStateStore();
     let result = false;
 
-    await api.delete('/api/teacher/instructions/' + id)
+    await api.delete('/api/instructions/' + id)
         .then((response) => {
             result = true;
             store.addAlert(response.data.message, 'success');

@@ -21,18 +21,13 @@ const loading = ref(true);
 const route = useRoute();
 const delete_modal = ref(false);
 
+// TODO: Add loading everywhere
 onMounted(async () => {
     loading.value = true;
     await router.isReady();
     instruction.value = await getInstruction(route.params.id);
     loading.value = false;
 });
-
-const goToEdit = async () => {
-    await router.push({name: 'EditInstruction', params: {id: route.params.id}}).catch(() => {
-        console.log('Error while routing to ShowInstruction') // TODO: Add error handling
-    });
-}
 
 const handleDelete = async () => {
     if(await deleteInstruction(instruction.value.id))

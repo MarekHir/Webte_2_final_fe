@@ -13,7 +13,7 @@ export const useStateStore = defineStore('state', () => {
         save: 'primary',
         close: 'dark'
     })
-    const user = ref({id: 2,first_name: 'Marek', surname: 'Hirschner', role: 'admin'});
+    const user = ref({id: 1, first_name: 'Marek', surname: 'Hirschner', role: 'admin'});
     //
 
     const isAuthenticated = computed(() => {
@@ -29,7 +29,7 @@ export const useStateStore = defineStore('state', () => {
     });
 
     const isAdmin = computed(() => {
-        return user.value ? user.value.role === 'admin'  : false;
+        return user.value ? user.value.role === 'admin' : false;
     });
 
     const isTeacher = computed(() => {
@@ -41,7 +41,7 @@ export const useStateStore = defineStore('state', () => {
     });
 
     const userIcon = computed(() => {
-        if(!user.value) return '';
+        if (!user.value) return '';
         switch (user.value.role) {
             case 'admin':
                 return 'mdi-account-cog';
@@ -80,8 +80,8 @@ export const useStateStore = defineStore('state', () => {
     }
 
     const userAllowed = (roles) => {
-        if(!user.value) return false;
-        if(isAdmin.value) return true;
+        if (!user.value) return false;
+        if (isAdmin.value) return true;
         return !!roles.includes(user.value.role);
     };
 

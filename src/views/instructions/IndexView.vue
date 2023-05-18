@@ -18,7 +18,7 @@ onMounted(async () => {
     await router.isReady();
 });
 
-const goToInstruction = async (id) => {
+const goToShow = async (id) => {
     await router.push({name: 'ShowInstruction', params: {id: id}}).catch(() => {
         console.log('Error while routing to ShowInstruction') // TODO: Add error handling
     });
@@ -43,7 +43,7 @@ const goToInstruction = async (id) => {
             </thead>
             <tbody>
             <template v-for="instruction in data" :key="instruction.id">
-                <tr @click="goToInstruction(instruction.id)">
+                <tr @click="goToShow(instruction.id)">
                     <td>{{ instruction.name }}</td>
                     <td>{{ instruction.description }}</td>
                     <td>{{ t('instructions.for_user_type.' + instruction.for_user_type) }}</td>

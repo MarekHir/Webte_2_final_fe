@@ -1,7 +1,7 @@
 <script setup>
 import {ref} from "vue";
 import {useI18n} from "vue-i18n";
-import {addExerciseList} from "@/api/teacher";
+import {addExerciseList} from "@/api/exercises_lists";
 import {useStateStore} from "@/stores/state";
 import DashboardTitle from "@/components/Dashboard/DashboardTitle.vue";
 

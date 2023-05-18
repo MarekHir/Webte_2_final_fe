@@ -1,7 +1,7 @@
 <script setup>
 import {useI18n} from "vue-i18n";
 import {onMounted, ref} from "vue";
-import {getStudents} from "@/api/teacher";
+import {getStudents} from "@/api/students";
 import router from "@/router";
 import DashboardTitle from "@/components/Dashboard/DashboardTitle.vue";
 
