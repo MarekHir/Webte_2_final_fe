@@ -3,10 +3,12 @@ import login from "@/locales/views/auth/login/sk";
 import registration from "@/locales/views/auth/registration/sk";
 import dashboard from "@/locales/layouts/dashboard/sk";
 import teacher from "@/locales/views/teacher/sk";
+import instructions from "@/locales/views/instructions/sk";
 
 export default {
     login: login,
     registration: registration,
+    instructions: instructions,
     language: {
         title: 'Prepnite na {lang}',
         en: 'Anglický',

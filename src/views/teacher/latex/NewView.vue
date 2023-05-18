@@ -3,6 +3,7 @@ import {ref} from "vue";
 import {useI18n} from "vue-i18n";
 import {addExerciseList} from "@/api/teacher";
 import {useStateStore} from "@/stores/state";
+import DashboardTitle from "@/components/Dashboard/DashboardTitle.vue";
 
 const files = ref();
 const images = ref();
@@ -18,11 +19,7 @@ const submit = async () => {
 }
 </script>
 <template>
-    <v-card-title class="text-center">
-        <h1 class="text-h3">
-            {{ t('teacher.latex.new.title') }}
-        </h1>
-    </v-card-title>
+    <DashboardTitle title_key="teacher.latex.new.title"/>
     <v-divider class="mt-2"/>
     <v-card-item>
         <v-container>

@@ -4,22 +4,23 @@ import {onMounted, ref} from "vue";
 import {getStudent} from "@/api/teacher";
 import {fullName} from "@/utils";
 import {useRoute} from "vue-router";
+import DashboardTitle from "@/components/Dashboard/DashboardTitle.vue";
+import DashboardSubtitle from "@/components/Dashboard/DashboardSubtitle.vue";
+import router from "@/router";
 
 const {t} = useI18n({useScope: 'global'});
 const data = ref(null);
 const route = useRoute();
 
 onMounted(async () => {
+    await router.isReady()
     data.value = await getStudent(route.params.id)
 });
 
 </script>
 <template>
-    <v-card-title class="text-center">
-        <h1 class="text-h3">
-            {{ t('teacher.students.show.title', {name: fullName(data)}) }}
-        </h1>
-    </v-card-title>
+    <DashboardTitle title_key="teacher.students.show.title"/>
+    <DashboardSubtitle :subtitle="fullName(data)"/>
     <v-divider class="mt-2"/>
     <v-card-item>
         <v-container>

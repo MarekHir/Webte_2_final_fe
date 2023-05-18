@@ -10,8 +10,10 @@
     "format": "prettier --write src"
   },
   "dependencies": {
+    "@vavt/md-editor-extension": "^3.0.0",
     "@vee-validate/yup": "^4.9.3",
     "axios": "^1.4.0",
+    "md-editor-v3": "^4.0.0",
     "pinia": "^2.0.36",
     "vee-validate": "^4.9.3",
     "vue": "^3.3.2",
