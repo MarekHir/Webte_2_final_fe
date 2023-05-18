@@ -52,6 +52,7 @@ const for_user_type = useField('for_user_type');
 const description = useField('description');
 const markdown = useField('markdown');
 
+
 const onSubmit = handleSubmit(async (values) => {
     let result;
 
@@ -118,7 +119,7 @@ watch(fullscreen, () => {
         <v-divider class="mt-4"/>
         <v-card-item>
             <v-container>
-                <v-form>
+                <form @submit.prevent="onSubmit">
                     <v-row>
                         <v-col cols="12" md="6">
                             <v-text-field
@@ -133,7 +134,7 @@ watch(fullscreen, () => {
                                 class="ma-auto"
                                 :items="user_types"
                                 :label="t('instructions.for_user_type.title')"
-                                :error-messages="description.errorMessage.value"/>
+                                :error-messages="for_user_type.errorMessage.value"/>
                         </v-col>
                     </v-row>
                     <v-text-field
@@ -141,9 +142,15 @@ watch(fullscreen, () => {
                         class="ma-auto"
                         :label="t('instructions.edit.description')"
                         :error-messages="description.errorMessage.value"/>
-                </v-form>
-                <label>MarkDown</label>
-                <p v-if="markdown.errorMessage.value" class="text-red">{{markdown.errorMessage.value}}</p>
+                </form>
+<!--                <label>MarkDown</label>-->
+                <p v-if="markdown.errorMessage.value" class="text-error"
+                   :style="{ fontSize: 'smaller', paddingLeft: '15px' }"
+                >{{markdown.errorMessage.value}}
+                </p>
+                <p v-if="markdown.errorMessage.value" class="text-error" style="position: relative;">
+                    <v-divider class="divider-line" :style="{borderTop: '3px',borderColor: 'red', borderStyle: 'solid', opacity: '1'}" />
+                </p>
                 <MdEditor ref="editorRef" :noUploadImg="true" language="en-US" v-model="markdown.value.value"/>
             </v-container>
         </v-card-item>
