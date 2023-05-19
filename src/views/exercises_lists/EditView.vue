@@ -1,6 +1,5 @@
 <script setup>
 
-import {useStateStore} from "@/stores/state";
 import {useI18n} from "vue-i18n";
 import DashboardTitle from "@/components/Dashboard/DashboardTitle.vue";
 import {computed, onMounted, ref} from "vue";
@@ -13,7 +12,6 @@ import {onInvalidSubmit} from "@/utils";
 import {createExerciseList, getExerciseList, patchExerciseList} from "@/api/exercises_lists";
 
 const {t} = useI18n({useScope: 'global'});
-const store = useStateStore();
 const route = useRoute();
 const loading = ref(true);
 const exercise = ref(null);
@@ -25,12 +23,15 @@ const title = computed(() => pageType.value === 'create' ? 'exercises_list.new.t
 const schema = yup.object({
     files: yup.array().required(),
     images: yup.array().nullable(),
-    name: yup.string().required(),
-    description: yup.string().required(),
-    points: yup.number().required(),
+    name: yup.string().required().min(10).max(40),
+    description: yup.string().required().min(20).max(150),
+    points: yup.number().required().min(0),
     is_active: yup.boolean().nullable(),
     initiation: yup.date().nullable(),
-    deadline: yup.date().nullable(),
+    deadline: yup.date().nullable().test('is-greater', 'Initiation must be before deadline', function (value) {
+        const initiation = this.resolve(yup.ref('initiation'));
+        return !initiation || !value || initiation <= value;
+    }),
 });
 
 const {handleSubmit} = useForm({
@@ -109,7 +110,7 @@ onMounted(async () => {
         <v-divider class="mt-4"/>
         <v-card-item>
             <v-container>
-                <v-form>
+                <form @submit.prevent="onSubmit">
                     <v-row>
                         <v-col cols="12" md="6" class="d-flex justify-center align-center">
                             <v-text-field
@@ -221,7 +222,7 @@ onMounted(async () => {
                                     :error-messages="deadline.errorMessage.value"/>
                         </v-col>
                     </v-row>
-                </v-form>
+                </form>
             </v-container>
         </v-card-item>
     </template>
