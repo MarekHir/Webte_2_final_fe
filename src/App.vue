@@ -3,6 +3,7 @@
 
 <template>
     <v-app>
+        <VtToast/>
         <!--suppress VueMissingComponentImportInspection -->
         <AppLayout/>
     </v-app>

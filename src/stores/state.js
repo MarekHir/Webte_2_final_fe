@@ -1,8 +1,9 @@
 import {computed, ref} from 'vue'
 import {defineStore} from 'pinia'
+import { useToast } from 'vue-toastification';
 
 export const useStateStore = defineStore('state', () => {
-    const alerts = ref([])
+    const toast = useToast();
     const menuHidden = ref(false);
     const btn_colors = ref({
         index: 'grey',
@@ -56,21 +57,9 @@ export const useStateStore = defineStore('state', () => {
     });
 
     const addAlert = (message, type) => {
-        const alert = {
-            message,
-            type
-        };
-
-        alerts.value.push(alert);
-
-        setTimeout(() => {
-            removeAlert(alert);
-        }, 5000);
+        toast.info('works');
+        toast(message, {type: type});
     };
-
-    const removeAlert = (alert) => {
-        alerts.value.splice(alerts.value.indexOf(alert), 1);
-    }
 
     const login = (newUser) => {
         user.value = newUser;
@@ -87,10 +76,8 @@ export const useStateStore = defineStore('state', () => {
     };
 
     return {
-        alerts,
         user,
         addAlert,
-        removeAlert,
         isAuthenticated,
         logout,
         login,

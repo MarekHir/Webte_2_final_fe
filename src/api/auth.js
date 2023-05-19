@@ -1,5 +1,6 @@
 import api from "@/config/axios";
 import {useStateStore} from "@/stores/state";
+import {useToast} from "vue-toastification";
 
 export const login = async (data) => {
     const store = useStateStore();
@@ -38,6 +39,7 @@ export const logout = async () => {
             result = false;
         }
     }).catch(error => {
+        useToast().error(error.message);
         store.addAlert(error.message, 'error');
         result = false;
     });

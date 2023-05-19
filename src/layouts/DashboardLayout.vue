@@ -12,11 +12,18 @@ import {logout} from "@/api/auth";
 import router from "@/router";
 import {useStateStore} from "@/stores/state";
 import {storeToRefs} from "pinia";
+import {useToast} from "vue-toastification";
+import {onMounted} from "vue";
 
+const toast = useToast();
 const {t} = useI18n({useScope: 'global'});
 const store = useStateStore();
 const {user, menuHidden} = storeToRefs(store);
 
+
+onMounted(() => {
+    toast.info('works', {timeout: 1000});
+})
 const handleLogout = async () => {
     let result = await logout();
     if (result === true)
