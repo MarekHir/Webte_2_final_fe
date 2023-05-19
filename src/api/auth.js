@@ -6,7 +6,14 @@ export const login = async (data) => {
     const store = useStateStore();
 
     let result = false;
-    await api.get('/sanctum/csrf-cookie');
+
+    let network_error = await api.get('/sanctum/csrf-cookie')
+        .then(() => false).catch(() => true);
+
+    if(network_error){
+        store.addAlert('Failed connecting to the server', 'error'); //TODO translate
+        return false;
+    }
     await api.post(`/api/${i18n.global.locale.value}/auth/login`, data).then(response => {
         if (response.status === 200) {
             store.login(response.data.user);
@@ -46,7 +53,15 @@ export const register = async (data) => {
     const store = useStateStore();
 
     let result = false;
-    await api.get('/sanctum/csrf-cookie');
+
+    let network_error = await api.get('/sanctum/csrf-cookie')
+        .then(() => false).catch(() => true);
+
+    if(network_error){
+        store.addAlert('Failed connecting to the server', 'error'); //TODO translate
+        return false;
+    }
+
     await api.post(`/api/${i18n.global.locale.value}/auth/registration`, data)
         .then(response => {
             if (response.status === 200) {
