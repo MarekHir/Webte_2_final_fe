@@ -4,14 +4,16 @@ import registration from "@/locales/views/auth/registration/sk";
 import dashboard from "@/locales/layouts/dashboard/sk";
 import teacher from "@/locales/views/teacher/sk";
 import instructions from "@/locales/views/instructions/sk";
+import exercises_list from "@/locales/views/exercises_set/sk";
 
 export default {
     login: login,
     registration: registration,
     instructions: instructions,
+    exercises_list: exercises_list,
     language: {
         title: 'Prepnite na {lang}',
-        en: 'Anglický',
+        en: 'Angličtinu',
         sk: 'Slovenský',
     },
     dashboard: dashboard,

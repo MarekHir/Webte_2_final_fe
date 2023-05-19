@@ -35,11 +35,10 @@ const user_types = [
     {title: t('instructions.for_user_type.student'), value: 'student'},
 ]
 
-// TODO: Add validations
 const schema = yup.object({
-    name: yup.string().required(),
+    name: yup.string().required().min(10).max(50),
     for_user_type: yup.string().required(),
-    description: yup.string().required(),
+    description: yup.string().required().max(10).max(150),
     markdown: yup.string().required(),
 });
 
