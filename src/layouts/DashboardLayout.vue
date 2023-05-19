@@ -12,22 +12,14 @@ import {logout} from "@/api/auth";
 import router from "@/router";
 import {useStateStore} from "@/stores/state";
 import {storeToRefs} from "pinia";
-import {useToast} from "vue-toastification";
-import {onMounted} from "vue";
 
-const toast = useToast();
 const {t} = useI18n({useScope: 'global'});
 const store = useStateStore();
 const {user, menuHidden} = storeToRefs(store);
 
-
-onMounted(() => {
-    toast.info('works', {timeout: 1000});
-})
 const handleLogout = async () => {
-    let result = await logout();
-    if (result === true)
-        await router.push({name: 'Login'});
+    await logout();
+    await router.push({name: 'Login'});
 }
 </script>
 
@@ -37,7 +29,7 @@ const handleLogout = async () => {
             <v-list>
                 <v-list-item
                         :prepend-avatar="store.userPicture"
-                        :prepend-icon="store.userIcon"
+                        :prepend-icon="store.userPicture ? '' : store.userIcon"
                         :title="store.fullName"
                         :subtitle="t('user.role.' + user.role)"/>
             </v-list>
@@ -51,7 +43,7 @@ const handleLogout = async () => {
             <v-list-item v-if="store.isAdmin" :subtitle="t('user.role.student') + ':'"/>
             <v-list nav v-if="store.isStudent">
                 <v-list-item
-                        to="/student/exercise/new"
+                        to="/exercises/generate"
                         prepend-icon="mdi-clipboard-plus"
                         :title="t('dashboard.menu.student.generate')"/>
                 <v-list-item

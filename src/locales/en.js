@@ -5,12 +5,14 @@ import dashboard from "@/locales/layouts/dashboard/en";
 import teacher from "@/locales/views/teacher/en";
 import instructions from '@/locales/views/instructions/en'
 import exercises_list from '@/locales/views/exercises_set/en'
+import exercises from '@/locales/views/exercises/en'
 
 export default {
     login: login,
     registration: registration,
     instructions: instructions,
     exercises_list: exercises_list,
+    exercises: exercises,
     language: {
         title: 'Switch to {lang}',
         en: 'English',
@@ -36,6 +38,7 @@ export default {
         true: 'Yes',
         false: 'No',
     },
+    not_set: 'Not set',
     button: {
         index: 'Back to list',
         show: 'Show',

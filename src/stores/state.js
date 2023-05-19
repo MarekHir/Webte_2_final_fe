@@ -57,7 +57,6 @@ export const useStateStore = defineStore('state', () => {
     });
 
     const addAlert = (message, type) => {
-        toast.info('works');
         toast(message, {type: type});
     };
 

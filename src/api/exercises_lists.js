@@ -1,5 +1,6 @@
 import api from "@/config/axios";
 import {useStateStore} from "@/stores/state";
+import i18n from "@/config/i18n";
 
 export const createExerciseList = async (data) => {
     const store = useStateStore()
@@ -19,7 +20,7 @@ export const createExerciseList = async (data) => {
     });
 
 
-    await api.post('/api/exercises-list', formData, {headers: {'content-type': 'multipart/form-data'}})
+    await api.post(`/api/${i18n.global.locale.value}/exercises-list`, formData, {headers: {'content-type': 'multipart/form-data'}})
         .then((response) => {
             result = response.data;
         }).catch((error) => {
@@ -31,8 +32,7 @@ export const createExerciseList = async (data) => {
 export const getExerciseLists = async () => {
     const store = useStateStore()
     let result = false;
-
-    await api.get('/api/exercises-list')
+    await api.get(`/api/${i18n.global.locale.value}/exercises-list`)
         .then((response) => {
             result = response.data;
         }).catch((error) => {
@@ -46,7 +46,7 @@ export const getExerciseListsByName = async (name) => {
     const store = useStateStore()
     let result = false;
 
-    await api.get('/api/exercises-list', {params: {param: name, search_by: 'name'}})
+    await api.get(`/api/${i18n.global.locale.value}/exercises-list`, {params: {param: name, search_by: 'name'}})
         .then((response) => {
             result = response.data;
         }).catch((error) => {
@@ -60,7 +60,7 @@ export const getExerciseList = async (id) => {
     const store = useStateStore()
     let result = false;
 
-    await api.get('/api/exercises-list/' + id)
+    await api.get(`/api/${i18n.global.locale.value}/exercises-list/${id}`)
         .then((response) => {
             result = response.data;
         }).catch((error) => {
@@ -77,7 +77,7 @@ export const patchExerciseList = async (data, id) => {
     const store = useStateStore()
     let result = false;
 
-    await api.patch('/api/exercises-list/' + id, data)
+    await api.patch(`/api/${i18n.global.locale.value}/exercises-list/${id}`, data)
         .then(() => {
             result = true;
         }).catch((error) => {
@@ -91,7 +91,7 @@ export const deleteExerciseList = async (id) => {
     const store = useStateStore()
     let result = false;
 
-    await api.delete('/api/exercises-list/' + id)
+    await api.delete(`/api/${i18n.global.locale.value}/exercises-list/${id}`)
         .then((response) => {
             result = true;
             store.addAlert(response.data.message, 'success');

@@ -28,6 +28,7 @@ const goToStudent = async (id) => {
             <v-table>
                 <thead>
                 <tr>
+                    <th style="width: 5%"></th>
                     <th>{{ t('teacher.students.index.table.header.first_name') }}</th>
                     <th>{{ t('teacher.students.index.table.header.surname') }}</th>
                 </tr>
@@ -35,6 +36,7 @@ const goToStudent = async (id) => {
                 <tbody>
                 <template v-for="student in data" :key="student.id">
                     <tr @click.once="goToStudent(student.id)">
+                        <td><v-avatar :image="student.icon" icon="mdi-account-school"/></td>
                         <td>{{ student.first_name }}</td>
                         <td>{{ student.surname }}</td>
                     </tr>

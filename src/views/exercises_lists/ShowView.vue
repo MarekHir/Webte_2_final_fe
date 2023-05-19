@@ -25,7 +25,6 @@ onMounted(async () => {
     loading.value = true;
     await router.isReady();
     exercise.value = await getExerciseList(route.params.id);
-    console.log(exercise.value)
     loading.value = false;
 });
 
@@ -54,23 +53,35 @@ const handleDelete = async () => {
                 :subtitle="exercise.name"
                 subtitle_size="h4"
                 :description="fullName(exercise.created_by)"/>
-        <v-divider className="mt-4"/>
+        <v-divider class="mt-4"/>
         <v-card-item>
             <v-container>
                 <v-card class="pa-4 mb-4">
                     <v-card-item>
-                        <h3 class="text-h5 text-center">{{ exercise.description }}</h3>
+                        <v-list class="w-100">
+                            <h3 class="text-h5 text-center">{{ t('exercises_list.description') }}</h3>
+                            <v-divider class="my-2"/>
+                            <h3 class="text-h5 text-center">{{ exercise.description || t('not_set') }}</h3>
+                        </v-list>
                     </v-card-item>
                 </v-card>
                 <v-card class="pa-4 my-4">
                     <v-card-item>
                         <v-row>
                             <v-col cols="12" md="6" class="d-flex justify-center align-center">
-                                <h3 class="text-h5">{{ t('exercises_list.initiation') }}: {{ exercise.initiation }}</h3>
+                                <v-list class="w-100">
+                                    <h3 class="text-h5 text-center">{{ t('exercises_list.points') }}</h3>
+                                    <v-divider class="w-75 mx-auto my-2"/>
+                                    <h3 class="text-h5 text-center">{{ exercise.points || t('not_set') }}</h3>
+                                </v-list>
                             </v-col>
                             <v-divider vertical/>
                             <v-col cols="12" md="6" class="d-flex justify-center align-center">
-                                <h3 class="text-h5">{{ t('exercises_list.deadline') }}: {{ exercise.deadline }}</h3>
+                                <v-list class="w-100">
+                                    <h3 class="text-h5 text-center">{{ t('exercises_list.is_active') }}</h3>
+                                    <v-divider class="w-75 mx-auto my-2"/>
+                                    <h3 class="text-h5 text-center">{{ t(`bool.${exercise.is_active}`) || t('not_set') }}</h3>
+                                </v-list>
                             </v-col>
                         </v-row>
                     </v-card-item>
@@ -79,11 +90,19 @@ const handleDelete = async () => {
                     <v-card-item>
                         <v-row>
                             <v-col cols="12" md="6" class="d-flex justify-center align-center">
-                                <h3 class="text-h5">{{ t('exercises_list.points') }}: {{ exercise.points }}</h3>
+                                <v-list class="w-100">
+                                    <h3 class="text-h5 text-center">{{ t('exercises_list.initiation') }}</h3>
+                                    <v-divider class="w-75 mx-auto my-2"/>
+                                    <h3 class="text-h5 text-center">{{ exercise.initiation || t('not_set') }}</h3>
+                                </v-list>
                             </v-col>
                             <v-divider vertical/>
                             <v-col cols="12" md="6" class="d-flex justify-center align-center">
-                                <h3 class="text-h5">{{ t('exercises_list.is_active') }}: {{ t(`bool.${exercise.is_active}`) }}</h3>
+                                <v-list class="w-100">
+                                    <h3 class="text-h5 text-center">{{ t('exercises_list.deadline') }}</h3>
+                                    <v-divider class="w-75 mx-auto my-2"/>
+                                    <h3 class="text-h5 text-center">{{ exercise.deadline || t('not_set') }}</h3>
+                                </v-list>
                             </v-col>
                         </v-row>
                     </v-card-item>

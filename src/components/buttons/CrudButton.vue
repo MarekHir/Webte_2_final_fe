@@ -28,6 +28,11 @@ const props = defineProps({
         type: Boolean,
         required: false,
         default: false
+    },
+    title: {
+        type: String,
+        required: false,
+        default: null
     }
 });
 const emit = defineEmits(['button-clicked']);
@@ -66,7 +71,7 @@ const redirect = () => {
     <v-btn @click="redirect()"
            class="mx-1 my-2"
            variant="outlined"
-           :text="t(`button.${props.action}`)"
+           :text="t(props.title ?? `button.${props.action}`)"
            :color="store.btn_colors[props.action]"
            :prepend-icon="actionsToIcons[props.action]"/>
 </template>

@@ -96,6 +96,34 @@ const router = createRouter({
             ]
         },
         {
+            path: '/exercises',
+            meta: {
+                layout: 'Dashboard',
+            },
+            children: [
+                {
+                    path: '',
+                    name: 'IndexExercises',
+                    component: () => import('../views/exercises/IndexView.vue'),
+                },
+                {
+                    path: 'generate',
+                    name: 'GenerateExercises',
+                    component: () => import('../views/exercises/GenerateView.vue'),
+                },
+                {
+                    path: ':id/solve',
+                    name: 'SolvedExercises',
+                    component: () => import('../views/exercises/SolveView.vue'),
+                },
+                {
+                    path: ':id',
+                    name: 'ShowExercises',
+                    component: () => import('../views/exercises/ShowView.vue'),
+                }
+            ],
+        },
+        {
             path: '/exercises_lists',
             meta: {
                 layout: 'Dashboard',

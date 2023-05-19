@@ -30,6 +30,11 @@ export default {
             text: 'Stránka, ktorú hľadáte, neexistuje.',
         },
     },
+    bool: {
+        true: 'Áno',
+        false: 'Nie',
+    },
+    not_set: 'Nie je nastavené',
     button: {
         index: 'Späť na zoznam',
         show: 'Zobraziť',
