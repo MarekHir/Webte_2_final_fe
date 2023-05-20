@@ -19,12 +19,11 @@ const exercise = ref(null);
 const pageType = ref('create');
 const title = computed(() => pageType.value === 'create' ? 'exercises_list.new.title' : 'exercises_list.edit.title');
 
-// TODO: Add validations
 const schema = yup.object({
     files: yup.array().required(),
     images: yup.array().nullable(),
-    name: yup.string().required().min(10).max(40),
-    description: yup.string().required().min(20).max(150),
+    name: yup.string().required().min(5).max(30),
+    description: yup.string().required().min(10).max(150),
     points: yup.number().required().min(0),
     is_active: yup.boolean().nullable(),
     initiation: yup.date().nullable(),
