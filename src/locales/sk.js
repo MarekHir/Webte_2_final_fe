@@ -4,7 +4,7 @@ import registration from "@/locales/views/auth/registration/sk";
 import dashboard from "@/locales/layouts/dashboard/sk";
 import teacher from "@/locales/views/teacher/sk";
 import instructions from "@/locales/views/instructions/sk";
-import exercises_list from "@/locales/views/exercises_set/sk";
+import exercises_list from "@/locales/views/exercises_lists/sk";
 
 export default {
     login: login,

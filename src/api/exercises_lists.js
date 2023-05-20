@@ -29,10 +29,10 @@ export const createExerciseList = async (data) => {
     return result;
 }
 
-export const getExerciseLists = async () => {
+export const getExerciseLists = async (options = null) => {
     const store = useStateStore()
     let result = false;
-    await api.get(`/api/${i18n.global.locale.value}/exercises-list`)
+    await api.get(`/api/${i18n.global.locale.value}/exercises-list`, options ? {params: options} : null)
         .then((response) => {
             result = response.data;
         }).catch((error) => {

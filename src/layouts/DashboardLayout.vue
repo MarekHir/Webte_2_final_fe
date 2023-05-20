@@ -12,20 +12,25 @@ import {logout} from "@/api/auth";
 import router from "@/router";
 import {useStateStore} from "@/stores/state";
 import {storeToRefs} from "pinia";
+import {useTheme} from "vuetify";
 
 const {t} = useI18n({useScope: 'global'});
 const store = useStateStore();
 const {user, menuHidden} = storeToRefs(store);
+const theme = useTheme();
 
 const handleLogout = async () => {
     await logout();
     await router.push({name: 'Login'});
 }
+const toggleDarkMode = () => {
+    theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark';
+}
 </script>
 
 <template>
     <v-layout :full-height="true" v-if="store.isAuthenticated">
-        <v-navigation-drawer v-model:temporary="menuHidden" rail expand-on-hover>
+        <v-navigation-drawer v-model:temporary="menuHidden" rail expand-on-hover permanent class="">
             <v-list>
                 <v-list-item
                         :prepend-avatar="store.userPicture"
@@ -43,15 +48,15 @@ const handleLogout = async () => {
             <v-list-item v-if="store.isAdmin" :subtitle="t('user.role.student') + ':'"/>
             <v-list nav v-if="store.isStudent">
                 <v-list-item
-                        to="/exercises/generate"
+                        :to="{name: 'GenerateExercises'}"
                         prepend-icon="mdi-clipboard-plus"
                         :title="t('dashboard.menu.student.generate')"/>
                 <v-list-item
-                        to="/student/exercise/assigned"
+                        :to="{name: 'AssignedExercises'}"
                         prepend-icon="mdi-clipboard-clock"
                         :title="t('dashboard.menu.student.assigned')"/>
                 <v-list-item
-                        to="/student/exercise/solved"
+                        :to="{name: 'SolvedExercises'}"
                         prepend-icon="mdi-clipboard-check"
                         :title="t('dashboard.menu.student.solved')"/>
             </v-list>
@@ -79,6 +84,9 @@ const handleLogout = async () => {
                     <v-list-item to="/instructions" prepend-icon="mdi-help-circle-outline"
                                  :title="t('dashboard.menu.instructions')"/>
                     <ChangeLanguage list_item/>
+                    <v-list-item prepend-icon="mdi-theme-light-dark" :title="t(`theme_mode.${theme.global.name.value}`)"
+                                 @click="toggleDarkMode()">
+                    </v-list-item>
                     <v-list-item prepend-icon="mdi-logout" @click="handleLogout"
                                  :title="t('dashboard.menu.logout')"/>
                 </v-list>
@@ -94,4 +102,8 @@ const handleLogout = async () => {
     </v-layout>
 </template>
 <style scoped>
+:deep(::-webkit-scrollbar) {
+    width: 0;
+    background: transparent;
+}
 </style>

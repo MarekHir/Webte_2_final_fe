@@ -1,10 +1,12 @@
 import {createApp} from 'vue'
 import {createPinia} from 'pinia'
 import { registerLayouts } from './layouts/register';
-import '@/assets/main.css'
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
 
+import { Model } from 'vue-api-query'
+import axios from '@/config/axios';
+Model.$http = axios;
 
 import App from './App.vue'
 import router from './router'
@@ -29,7 +31,6 @@ app.use(vuetify)
 app.use(router)
 app.use(Toast, toastOptions);
 registerLayouts(app);
-
 
 app.mount('#app')
 

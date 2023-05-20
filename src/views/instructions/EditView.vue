@@ -14,6 +14,7 @@ import CrudButton from "@/components/buttons/CrudButton.vue";
 import * as yup from "yup";
 import {useField, useForm} from "vee-validate";
 import {onInvalidSubmit} from "@/utils";
+import InstructionsDarkModeSwitch from "@/components/InstructionsDarkModeSwitch.vue";
 
 const {t} = useI18n({useScope: 'global'});
 const store = useStateStore();
@@ -26,6 +27,7 @@ const editorRef = ref(null);
 const pageFullscreen = ref(false);
 const fullscreen = ref(false);
 const {menuHidden} = storeToRefs(store);
+const theme = ref('light');
 
 const pageType = ref('create');
 const title = computed(() => pageType.value === 'create' ? 'instructions.edit.title.new' : 'instructions.edit.title.edit');
@@ -112,6 +114,7 @@ watch(fullscreen, () => {
                 <CrudButton v-if="pageType === 'edit'" action="show" route-name="ShowInstruction"/>
             </template>
             <template v-slot:prepend>
+                <InstructionsDarkModeSwitch v-model="theme"/>
                 <CrudButton action="save" route-name="" no-redirect @button-clicked="onSubmit"/>
             </template>
         </DashboardTitle>
@@ -150,7 +153,7 @@ watch(fullscreen, () => {
                 <p v-if="markdown.errorMessage.value" class="text-error" style="position: relative;">
                     <v-divider class="divider-line" :style="{borderTop: '3px',borderColor: 'red', borderStyle: 'solid', opacity: '1'}" />
                 </p>
-                <MdEditor ref="editorRef" :noUploadImg="true" language="en-US" v-model="markdown.value.value"/>
+                <MdEditor :theme="theme" ref="editorRef" :noUploadImg="true" language="en-US" v-model="markdown.value.value"/>
             </v-container>
         </v-card-item>
     </template>

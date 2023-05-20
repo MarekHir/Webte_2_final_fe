@@ -12,6 +12,7 @@ import {useRoute} from "vue-router";
 import DashboardSubtitle from "@/components/Dashboard/DashboardSubtitle.vue";
 import CrudButton from "@/components/buttons/CrudButton.vue";
 import DeleteModal from "@/components/DeleteModal.vue";
+import InstructionsDarkModeSwitch from "@/components/InstructionsDarkModeSwitch.vue";
 
 
 const {t} = useI18n({useScope: 'global'});
@@ -20,6 +21,7 @@ const instruction = ref(null);
 const loading = ref(true);
 const route = useRoute();
 const delete_modal = ref(false);
+const theme = ref('light');
 
 // TODO: Add loading everywhere
 onMounted(async () => {
@@ -36,7 +38,6 @@ const handleDelete = async () => {
         });
 
 }
-
 </script>
 <template>
     <template v-if="!loading">
@@ -45,6 +46,7 @@ const handleDelete = async () => {
                 <CrudButton action="index" route-name="IndexInstructions"/>
             </template>
             <template v-if="store.user.id === instruction.created_by || store.isAdmin" v-slot:prepend>
+                <InstructionsDarkModeSwitch v-model="theme"/>
                 <CrudButton action="edit" route-name="EditInstruction" :id="$props.id"/>
                 <CrudButton action="delete" @button-clicked="delete_modal = true" route-name="" no-redirect
                             :id="$props.id"/>
@@ -57,7 +59,7 @@ const handleDelete = async () => {
         <v-divider class="mt-4"/>
         <v-card-item>
             <v-container>
-                <MdPreview language="en-US" v-model="instruction.markdown"/>
+                <MdPreview :theme="theme" class="rounded-xl" language="en-US" v-model="instruction.markdown"/>
             </v-container>
         </v-card-item>
         <DeleteModal :dialog="delete_modal" @close="delete_modal = false" @delete="handleDelete"/>

@@ -24,13 +24,6 @@ const headers = ref([
         key: 'exercises_lists_sections.exercises_lists.points',
         lodash: true,
     }, {
-        title: 'exercise.attr.solved',
-        key: 'solved',
-        trans_value: true,
-    }, {
-        title: 'exercise.attr.points',
-        key: 'points',
-    }, {
         title: 'exercise.attr.createdAt',
         key: 'createdAt',
     }
@@ -40,14 +33,14 @@ const headers = ref([
 onMounted(async () => {
     loading.value = true;
     await router.isReady();
-    exercises.value = await Exercise.where('created_by', store.user.id).where('solved', true).all()
+    exercises.value = await Exercise.where('created_by', store.user.id).where('solved', false).get()
     loading.value = false;
 });
 
 </script>
 <template>
     <template v-if="!loading">
-        <DashboardTitle title_key="exercise.solved.title"/>
+        <DashboardTitle title_key="exercise.assigned.title"/>
         <v-divider class="mt-4"/>
         <v-card-item>
             <CustomTable :data="exercises" :headers="headers"/>

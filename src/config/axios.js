@@ -1,10 +1,9 @@
 import axios from "axios";
+import general from "@/config/general";
 
-
-const url = import.meta.env.DEV ? 'http://127.0.0.1:80' : 'https://site103.webte.fei.stuba.sk/final';
 
 const api = axios.create({
-    baseURL: url,
+    baseURL: general.baseURL,
     withCredentials: true,
     xsrfHeaderName: 'X-XSRF-TOKEN',
     xsrfCookieName: 'XSRF-TOKEN',

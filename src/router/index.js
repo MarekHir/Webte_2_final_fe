@@ -35,31 +35,6 @@ const router = createRouter({
             }
         },
         {
-            path: '/student/exercise',
-            redirect: HomeView,
-            meta: {
-                layout: 'Dashboard',
-                allowed: ['student'],
-            },
-            children: [
-                {
-                    path: 'new',
-                    name: 'GenerateExercises',
-                    component: () => import('../views/student/GenerateExercisesView.vue'),
-                },
-                {
-                    path: 'assigned',
-                    name: 'AssignedExercises',
-                    component: () => import('../views/student/AssignedExercisesView.vue'),
-                },
-                {
-                    path: 'solved',
-                    name: 'SolvedExercises',
-                    component: () => import('../views/student/SolvedExercisesView.vue'),
-                }
-            ]
-        },
-        {
             path: '/teacher',
             redirect: HomeView,
             name: 'Teacher',
@@ -105,6 +80,19 @@ const router = createRouter({
                     path: '',
                     name: 'IndexExercises',
                     component: () => import('../views/exercises/IndexView.vue'),
+                    meta: {
+                        allowed: ['teacher'],
+                    }
+                },
+                {
+                    path: 'assigned',
+                    name: 'AssignedExercises',
+                    component: () => import('../views/exercises/AssignedView.vue'),
+                },
+                {
+                    path: 'solved',
+                    name: 'SolvedExercises',
+                    component: () => import('../views/exercises/SolvedView.vue'),
                 },
                 {
                     path: 'generate',
@@ -112,12 +100,12 @@ const router = createRouter({
                     component: () => import('../views/exercises/GenerateView.vue'),
                 },
                 {
-                    path: ':id/solve',
-                    name: 'SolvedExercises',
+                    path: 'exercise/:id/solve',
+                    name: 'SolveExercise',
                     component: () => import('../views/exercises/SolveView.vue'),
                 },
                 {
-                    path: ':id',
+                    path: 'exercise/:id',
                     name: 'ShowExercises',
                     component: () => import('../views/exercises/ShowView.vue'),
                 }
