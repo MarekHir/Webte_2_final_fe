@@ -38,7 +38,7 @@ const user_types = [
 ]
 
 const schema = yup.object({
-    name: yup.string().required().min(10).max(50),
+    name: yup.string().required().min(5).max(30),
     for_user_type: yup.string().required(),
     description: yup.string().required().max(10).max(150),
     markdown: yup.string().required(),

@@ -25,7 +25,7 @@ const goToShow = async (id) => {
 }
 </script>
 <template>
-    <DashboardTitle title_key="instructions.index.title">
+    <DashboardTitle title_key="instructions.indexTitle">
         <template v-if="store.isTeacher" v-slot:prepend>
             <CrudButton action="create" route-name="NewInstruction"/>
         </template>
@@ -35,10 +35,10 @@ const goToShow = async (id) => {
         <v-table>
             <thead>
             <tr>
-                <th>{{t('instructions.index.description.name')}}</th>
-                <th>{{t('instructions.index.description.description')}}</th>
-                <th>{{t('instructions.index.description.for')}}</th>
-                <th>{{t('instructions.index.description.createdBy')}}</th>
+                <th>{{t('instructions.indexDescription.name')}}</th>
+                <th>{{t('instructions.indexDescription.description')}}</th>
+                <th>{{t('instructions.indexDescription.for')}}</th>
+                <th>{{t('instructions.indexDescription.createdBy')}}</th>
             </tr>
             </thead>
             <tbody>

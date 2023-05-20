@@ -31,6 +31,7 @@ export default {
             title: 'Stránka nebola nájdená',
             text: 'Stránka, ktorú hľadáte, neexistuje.',
         },
+        failed_connection: 'Nepodarilo sa pripojiť na server',
     },
     bool: {
         true: 'Áno',

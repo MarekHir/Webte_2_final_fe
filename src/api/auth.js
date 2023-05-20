@@ -11,7 +11,7 @@ export const login = async (data) => {
         .then(() => false).catch(() => true);
 
     if(network_error){
-        store.addAlert('Failed connecting to the server', 'error'); //TODO translate
+        store.addAlert(i18n.global.t('error.failed_connection'), 'error');
         return false;
     }
     await api.post(`/api/${i18n.global.locale.value}/auth/login`, data).then(response => {
@@ -58,7 +58,7 @@ export const register = async (data) => {
         .then(() => false).catch(() => true);
 
     if(network_error){
-        store.addAlert('Failed connecting to the server', 'error'); //TODO translate
+        store.addAlert(i18n.global.t('error.failed_connection'), 'error');
         return false;
     }
 

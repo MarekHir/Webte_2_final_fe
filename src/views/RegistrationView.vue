@@ -14,11 +14,11 @@ const {t} = useI18n({useScope: 'global'});
 const store = useStateStore();
 
 const schema = yup.object().shape({
-    first_name: yup.string().required().min(4).max(20),
-    surname: yup.string().required().min(4).max(20),
+    first_name: yup.string().required().min(5).max(30),
+    surname: yup.string().required().min(5).max(30),
 
     email: yup.string().email().required(),
-    password: yup.string().required().min(8).max(20)
+    password: yup.string().required().min(5).max(30)
         .minLowercase(1, 'password must contain at least 1 lower case letter')
         .minUppercase(1, 'password must contain at least 1 upper case letter')
         .minNumbers(1, 'password must contain at least 1 number')

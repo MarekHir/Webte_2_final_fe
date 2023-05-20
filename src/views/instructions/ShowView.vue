@@ -41,7 +41,7 @@ const handleDelete = async () => {
 </script>
 <template>
     <template v-if="!loading">
-        <DashboardTitle title_key="instructions.show.title">
+        <DashboardTitle title_key="instructions.showTitle">
             <template v-slot:append>
                 <CrudButton action="index" route-name="IndexInstructions"/>
             </template>

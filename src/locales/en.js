@@ -33,6 +33,7 @@ export default {
             title: '404 Page not found',
             text: 'The page you are looking for does not exist.',
         },
+        failed_connection: 'Failed connecting to the server',
     },
     true: 'Yes',
     false: 'No',
