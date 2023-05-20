@@ -1,5 +1,6 @@
 import {createApp} from 'vue'
 import {createPinia} from 'pinia'
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import { registerLayouts } from './layouts/register';
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
@@ -25,7 +26,10 @@ const toastOptions = {
     timeout: 3000,
 };
 
-app.use(createPinia())
+const pipia = createPinia();
+pipia.use(piniaPluginPersistedstate);
+
+app.use(pipia)
 app.use(i18n)
 app.use(vuetify)
 app.use(router)

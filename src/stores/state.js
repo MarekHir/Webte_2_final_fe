@@ -1,12 +1,12 @@
 import {computed, ref} from 'vue'
 import {defineStore} from 'pinia'
-import { useToast } from 'vue-toastification';
+import {useToast} from 'vue-toastification';
 
 export const useStateStore = defineStore('state', () => {
     const toast = useToast();
     const menuHidden = ref(false);
     const btn_colors = ref({
-        index: 'grey',
+        index: 'surface-variant',
         show: 'blue',
         edit: 'warning',
         create: 'success',
@@ -14,7 +14,7 @@ export const useStateStore = defineStore('state', () => {
         save: 'primary',
         close: 'dark'
     })
-    const user = ref({id: 1, first_name: 'Marek', surname: 'Hirschner', role: 'admin'});
+    const user = ref();
     //
     //{id: 2,first_name: 'Marek', surname: 'Hirschner', role: 'admin'}
 
@@ -90,4 +90,5 @@ export const useStateStore = defineStore('state', () => {
         userPicture,
         userAllowed
     };
-})
+}, {persist: { paths: ['user']}})
+// TODO: Callback refresh user data
