@@ -2,13 +2,14 @@ import {useStateStore} from "@/stores/state";
 import api from "@/config/axios";
 import i18n from "@/config/i18n";
 
-export const generateExercises = async (exercises) => {
+export const generateExercises = async (data) => {
     const store = useStateStore();
-    let result = null;
+    let result = false;
 
-    await api.post(`/api/${i18n.global.locale.value}/instructions`, data)
+    await api.post(`/api/${i18n.global.locale.value}/exercises`, data)
         .then((response) => {
-            result = response.data;
+            store.addAlert(response.data.message, 'success')
+            result = true;
         }).catch((error) => {
             store.addAlert(error.response.data.message, 'error');
         });

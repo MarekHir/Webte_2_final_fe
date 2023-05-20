@@ -80,7 +80,9 @@ const handleDelete = async () => {
                                 <v-list class="w-100">
                                     <h3 class="text-h5 text-center">{{ t('exercises_list.is_active') }}</h3>
                                     <v-divider class="w-75 mx-auto my-2"/>
-                                    <h3 class="text-h5 text-center">{{ t(`bool.${exercise.is_active}`) || t('not_set') }}</h3>
+                                    <h3 class="text-h5 text-center">{{
+                                        t(`bool.${exercise.is_active}`) || t('not_set')
+                                        }}</h3>
                                 </v-list>
                             </v-col>
                         </v-row>
@@ -112,3 +114,5 @@ const handleDelete = async () => {
         <DeleteModal :dialog="delete_modal" @close="delete_modal = false" @delete="handleDelete"/>
     </template>
 </template>
+<style scoped>
+</style>

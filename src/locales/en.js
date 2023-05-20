@@ -1,18 +1,18 @@
-import { en } from 'vuetify/locale'
+import {en} from 'vuetify/locale'
 import login from "@/locales/views/auth/login/en";
 import registration from "@/locales/views/auth/registration/en";
 import dashboard from "@/locales/layouts/dashboard/en";
 import teacher from "@/locales/views/teacher/en";
 import instructions from '@/locales/views/instructions/en'
-import exercises_list from '@/locales/views/exercises_set/en'
-import exercises from '@/locales/views/exercises/en'
+import exercises_list from '@/locales/views/exercises_lists/en'
+import exercise from '@/locales/views/exercise/en'
 
 export default {
     login: login,
     registration: registration,
     instructions: instructions,
     exercises_list: exercises_list,
-    exercises: exercises,
+    exercise: exercise,
     language: {
         title: 'Switch to {lang}',
         en: 'English',
@@ -34,11 +34,13 @@ export default {
             text: 'The page you are looking for does not exist.',
         },
     },
-    bool: {
-        true: 'Yes',
-        false: 'No',
-    },
+    true: 'Yes',
+    false: 'No',
     not_set: 'Not set',
+    theme_mode: {
+        dark: 'Switch to light mode',
+        light: 'Switch to dark mode',
+    },
     button: {
         index: 'Back to list',
         show: 'Show',
