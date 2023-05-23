@@ -4,12 +4,34 @@ import {onMounted, ref} from "vue";
 import {getStudents} from "@/api/students";
 import router from "@/router";
 import DashboardTitle from "@/components/Dashboard/DashboardTitle.vue";
+import Student from "@/models/Student";
+import CustomTable from "@/components/CustomTable.vue";
 
 const {t} = useI18n({useScope: 'global'});
-const data = ref([]);
+const students = ref([]);
+const headers = ref([
+    {
+        title: 'exercise.attr.name',
+        key: 'name',
+    }, {
+        title: 'exercises_list.attr.points',
+        key: 'exercises_lists_sections.exercises_lists.points',
+        lodash: true,
+    }, {
+        title: 'exercise.attr.solved',
+        key: 'solved',
+        trans_value: true,
+    }, {
+        title: 'exercise.attr.points',
+        key: 'points',
+    }, {
+        title: 'exercise.attr.createdAt',
+        key: 'createdAt',
+    }
+]);
 
 onMounted(async () => {
-    data.value = await getStudents()
+    students.value = await Student.get();
     await router.isReady();
 });
 
@@ -25,24 +47,7 @@ const goToStudent = async (id) => {
     <v-divider class="mt-2"/>
     <v-card-item>
         <v-container>
-            <v-table>
-                <thead>
-                <tr>
-                    <th style="width: 5%"></th>
-                    <th>{{ t('teacher.students.index.table.header.first_name') }}</th>
-                    <th>{{ t('teacher.students.index.table.header.surname') }}</th>
-                </tr>
-                </thead>
-                <tbody>
-                <template v-for="student in data" :key="student.id">
-                    <tr @click.once="goToStudent(student.id)">
-                        <td><v-avatar :image="student.icon" icon="mdi-account-school"/></td>
-                        <td>{{ student.first_name }}</td>
-                        <td>{{ student.surname }}</td>
-                    </tr>
-                </template>
-                </tbody>
-            </v-table>
+            <CustomTable :headers="headers" :data="students"/>
         </v-container>
     </v-card-item>
     <v-divider class="w-75 ma-auto my-2"/>
