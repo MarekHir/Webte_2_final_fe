@@ -37,13 +37,18 @@ onMounted(async () => {
     loading.value = false;
 });
 
+const goToShow = async (id) => {
+    await router.push({name: 'ShowExercise', params: {id: id}}).catch(() => {
+        console.log('Error while routing to ShowExercise') // TODO: Add error handling
+    });
+}
 </script>
 <template>
     <template v-if="!loading">
         <DashboardTitle title_key="exercise.assigned.title"/>
         <v-divider class="mt-4"/>
         <v-card-item>
-            <CustomTable :data="exercises" :headers="headers"/>
+            <CustomTable @on-click="goToShow" :data="exercises" :headers="headers"/>
         </v-card-item>
     </template>
 </template>

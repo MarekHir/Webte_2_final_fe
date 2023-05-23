@@ -7,6 +7,7 @@ import {ref} from "vue";
 const {t} = useI18n({useScope: 'global'});
 const theme = useTheme();
 
+const emit = defineEmits(['onClick']);
 const props = defineProps({
     data: {
         type: Array,
@@ -32,7 +33,7 @@ const getItem = (item, header) => {
         </tr>
         </thead>
         <tbody>
-        <tr v-for="item in props.data">
+        <tr @click="emit('onClick', item.id)" v-for="item in props.data">
             <td v-for="header in props.headers">
                 {{header.trans_value ? t(getItem(item, header).toString()) : getItem(item, header)}}
             </td>

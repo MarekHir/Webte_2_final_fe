@@ -9,7 +9,7 @@ const store = useStateStore();
 const props = defineProps({
     routeName: {
         type: String,
-        required: true
+        required: false,
     },
     action: {
         type: String,
@@ -44,6 +44,7 @@ const actionsToIcons = {
     index: 'mdi-text-box-multiple',
     delete: 'mdi-delete',
     save: 'mdi-content-save',
+    submit: 'mdi-check',
     close: 'mdi-close',
 }
 
@@ -51,17 +52,17 @@ onMounted(async () => {
     await router.isReady();
 });
 
-const redirect = () => {
+const redirect = async () => {
     if(props.noRedirect){
         emit('button-clicked');
         return;
     }
     if(props.id != null){
-        router.push({name: props.routeName, params: {id: props.id}}).catch(() => {
+        await router.push({name: props.routeName, params: {id: props.id}}).catch(() => {
             console.log('Error while routing to ' + props.routeName) // TODO: Add error handling
         });
     } else {
-        router.push({name: props.routeName}).catch(() => {
+        await router.push({name: props.routeName}).catch(() => {
             console.log('Error while routing to ' + props.routeName) // TODO: Add error handling
         });
     }

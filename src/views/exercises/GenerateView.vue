@@ -29,7 +29,7 @@ onMounted(async () => {
     if(exercises_lists.value.length === 0) {
         store.addAlert(t('exercise.generate.no_exercises_lists'), 'info')
         await router.push({name: 'Home'}).catch(() => {
-            console.log('Error while routing to IndexInstructions') // TODO: Add error handling
+            console.log('Error while routing to Home') // TODO: Add error handling
         });
     }
     loading.value = false;
@@ -42,7 +42,7 @@ const onSubmit = async () => {
         return;
     }
     if(await generateExercises({exercises_lists_sections_ids: selected_exercises.value}))
-        await router.push({name: 'Home'}).catch(() => {
+        await router.push({name: 'AssignedExercises'}).catch(() => {
             console.log('Error while routing to IndexInstructions') // TODO: Add error handling
         });
 
@@ -78,10 +78,11 @@ watch(selected_exercises, () => {
                                 v-slot="{ isSelected, toggle }">
                             <v-card :color="isSelected ? 'success' : ''"
                                     class="ma-2"
+                                    elevation="2"
                                     @click="toggle">
                                 <div class="pa-3">
                                     <v-icon v-if="isSelected" icon="mdi-check"/>
-                                    <span :class="alert_color">{{ option.name }} - {{ option.description }}</span>
+                                    <span :class="alert_color">{{ option.name }} - {{ option.tastDescription }}</span>
                                 </div>
                             </v-card>
                         </v-item>

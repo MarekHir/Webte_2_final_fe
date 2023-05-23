@@ -38,6 +38,7 @@ export default {
     true: 'Yes',
     false: 'No',
     not_set: 'Not set',
+    not_set_date: 'Unlimited',
     theme_mode: {
         dark: 'Switch to light mode',
         light: 'Switch to dark mode',

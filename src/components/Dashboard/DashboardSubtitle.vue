@@ -34,8 +34,8 @@ const props = defineProps({
             </v-col>
         </v-row>
     </v-card-subtitle>
-    <v-card-item v-if="props.description !== ''" class="text-disabled">
-        <p class="ma-auto w-75 text-subtitle-1 text-center text-break">
+    <v-card-item v-if="props.description !== ''" class="text-disabled py-0">
+        <p class="mx-auto w-75 text-subtitle-1 text-center text-break">
             {{ props.description }}
         </p>
     </v-card-item>

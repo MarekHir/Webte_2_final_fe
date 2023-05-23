@@ -5,13 +5,15 @@ import {useToast} from 'vue-toastification';
 export const useStateStore = defineStore('state', () => {
     const toast = useToast();
     const menuHidden = ref(false);
+    const show_keyboard = ref(false);
     const btn_colors = ref({
         index: 'surface-variant',
-        show: 'blue',
+        show: 'info',
         edit: 'warning',
         create: 'success',
         delete: 'error',
         save: 'primary',
+        submit: 'success',
         close: 'dark'
     })
     const user = ref();
@@ -88,7 +90,8 @@ export const useStateStore = defineStore('state', () => {
         isAdmin,
         userIcon,
         userPicture,
-        userAllowed
+        userAllowed,
+        show_keyboard
     };
 }, {persist: { paths: ['user']}})
 // TODO: Callback refresh user data

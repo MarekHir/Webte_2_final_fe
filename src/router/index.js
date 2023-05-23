@@ -106,7 +106,7 @@ const router = createRouter({
                 },
                 {
                     path: 'exercise/:id',
-                    name: 'ShowExercises',
+                    name: 'ShowExercise',
                     component: () => import('../views/exercises/ShowView.vue'),
                 }
             ],

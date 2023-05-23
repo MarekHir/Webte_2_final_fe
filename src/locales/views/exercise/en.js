@@ -16,12 +16,30 @@ export default {
     solved: {
         title: 'Solved exercises',
     },
+    show: {
+        title: 'Exercise',
+        dates: 'Date information',
+        points: 'Points information',
+        solution: 'Your solution',
+    },
+    solve: {
+        title: 'Solve exercise',
+        solution: 'Your solution',
+        latex_solution: 'Your solution in LaTeX format',
+        description: 'Optional description to defend your solution'
+    },
+    buttons: {
+        back_to_assigned: 'Back to assigned',
+        back_to_solved: 'Back to solved',
+        solve: 'Solve exercise',
+        submit: 'Submit solution',
+    },
     attr: {
         id: 'ID',
         name: 'Exercise list name and section',
         solved: 'Solved',
         points: 'Earned points',
-        solution: 'Solution',
+        solution: 'Students solution',
         exercises_lists_sections_id: 'Exercises list section ID',
         created_by: 'Created by',
         updated_by: 'Updated by',

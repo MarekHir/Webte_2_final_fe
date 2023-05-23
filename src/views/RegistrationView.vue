@@ -53,19 +53,6 @@ function onInvalidSubmit({errors}) {
     });
 }
 
-// const onSubmit = async () => {
-//     let result = await register({
-//         first_name: first_name.value,
-//         surname: surname.value,
-//         role: role.value,
-//         email: email.value,
-//         password: password.value,
-//         password_confirmation: password_confirmation.value
-//     });
-//     if (result === true)
-//         await router.push({name: 'Home'});
-// }
-
 const onSubmit = handleSubmit(async (values) => {
     let result = await register(values);
     if (result === true)

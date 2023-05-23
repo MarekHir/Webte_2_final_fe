@@ -7,14 +7,18 @@ import {onMounted, ref} from "vue";
 import router from "@/router";
 import {useRoute} from "vue-router";
 import Exercise from "@/models/Exercise";
-import CustomTable from "@/components/CustomTable.vue";
+import MathField from "@/components/MathField.vue";
+import DashboardSubtitle from "@/components/Dashboard/DashboardSubtitle.vue";
+import CrudButton from "@/components/buttons/CrudButton.vue";
 
 
 const {t} = useI18n({useScope: 'global'});
 const store = useStateStore();
 const loading = ref(true);
 const route = useRoute();
-const exercises = ref([]);
+const exercise = ref();
+const mathValue = ref('');
+const description = ref('')
 const headers = ref([
     {
         title: 'exercise.attr.name',
@@ -40,17 +44,58 @@ const headers = ref([
 onMounted(async () => {
     loading.value = true;
     await router.isReady();
-    exercises.value = await Exercise.where('created_by', store.user.id).where('solved', true).all()
+    exercise.value = await Exercise.find(route.params.id)
     loading.value = false;
 });
+const handleSubmit = async () => {
+    exercise.value.solution = mathValue.value;
+    exercise.value.description = description.value;
+    await exercise.value.patch()
+    await router.push({name: 'ShowExercise', params: {id: exercise.value.id}})
+}
 
 </script>
 <template>
     <template v-if="!loading">
-        <DashboardTitle title_key="exercise.solved.title"/>
-        <v-divider class="mt-4"/>
+        <DashboardTitle title_key="exercise.solve.title">
+            <template v-slot:append>
+                <CrudButton action="show" route-name="ShowExercise"/>
+            </template>
+            <template v-if="store.user.id === exercise.created_by || store.isAdmin" v-slot:prepend>
+                <CrudButton action="submit" title="exercise.buttons.submit"
+                            variant="elevated" no-redirect @button-clicked="handleSubmit"/>
+            </template>
+        </DashboardTitle>
+        <DashboardSubtitle
+                :subtitle="exercise.name"
+                subtitle_size="h4"
+                :description="exercise.tastDescription"
+        />
+        <v-divider class="mt-2"/>
         <v-card-item>
-            <CustomTable :data="exercises" :headers="headers"/>
+            <v-container>
+                <v-list>
+                    <v-list-item>
+                        <v-list-item-title>
+                            {{ exercise.task }}
+                        </v-list-item-title>
+                        <v-card v-if="exercise.task_picture" class="pa-3 w-75 mx-auto my-3">
+                            <v-img :src="exercise.task_picture"/>
+                        </v-card>
+                    </v-list-item>
+                    <v-divider class="my-2"/>
+                    <v-list-item class="py-2">
+                        <MathField class="mt-2" v-model="mathValue" color="primary"
+                                   :label="t('exercise.solve.solution')"/>
+                        <v-text-field v-model="mathValue" color="primary" variant="outlined"
+                                      :label="t('exercise.solve.latex_solution')"
+                                      math-virtual-keyboard-policy="manual"/>
+                        <v-text-field v-model="description" color="primary" variant="outlined"
+                                      :label="t('exercise.solve.description')"
+                                      math-virtual-keyboard-policy="manual"/>
+                    </v-list-item>
+                </v-list>
+            </v-container>
         </v-card-item>
     </template>
 </template>

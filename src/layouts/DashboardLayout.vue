@@ -13,11 +13,39 @@ import router from "@/router";
 import {useStateStore} from "@/stores/state";
 import {storeToRefs} from "pinia";
 import {useTheme} from "vuetify";
+import {computed, onMounted, onUnmounted, ref} from "vue";
 
 const {t} = useI18n({useScope: 'global'});
 const store = useStateStore();
-const {user, menuHidden} = storeToRefs(store);
+const {user, menuHidden, show_keyboard} = storeToRefs(store);
 const theme = useTheme();
+const screenWidth = ref(window.innerWidth);
+
+const keyboard_height = computed(() => {
+    if(!show_keyboard.value) {
+        return 0;
+    } else if(screenWidth.value < 470) {
+        return 210;
+    } else if(screenWidth.value < 800) {
+        return 220;
+    } else if(screenWidth.value < 825) {
+        return 250;
+    } else {
+        return 320;
+    }
+});
+
+const updateWidth = () => {
+    screenWidth.value = window.innerWidth;
+};
+
+onMounted(() => {
+    window.addEventListener('resize', updateWidth);
+});
+
+onUnmounted(() => {
+    window.removeEventListener('resize', updateWidth);
+});
 
 const handleLogout = async () => {
     await logout();
@@ -99,6 +127,7 @@ const toggleDarkMode = () => {
                 </v-card>
             </div>
         </v-main>
+        <v-bottom-navigation id="Latex-keyboard-container" :height="keyboard_height"/>
     </v-layout>
 </template>
 <style scoped>
