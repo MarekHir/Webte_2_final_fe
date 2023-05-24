@@ -21,7 +21,7 @@ const switchTheme = () => {
 }
 
 watch(theme.global.name, (value, oldValue) => {
-    if(oldValue === local_theme.value)
+    if (oldValue === local_theme.value)
         local_theme.value = value;
     else
         local_theme.value = oldValue;
@@ -30,6 +30,6 @@ watch(theme.global.name, (value, oldValue) => {
 </script>
 
 <template>
-<!--    TODO: preklad, farba, ikona -->
-    <v-btn variant="outlined" @click="switchTheme()" :text="t('preklad')"/>
+    <v-btn variant="outlined" @click="switchTheme()" color="secondary" prepend-icon="mdi-theme-light-dark"
+           :text="t('instructions.paper_color')"/>
 </template>

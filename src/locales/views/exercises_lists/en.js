@@ -10,6 +10,7 @@ export default {
     },
     edit: {
         title: 'Edit exercises list',
+        date_hint: 'Leave as is for no limit or click clear icon on left',
     },
     attr: {
         name: 'Name',

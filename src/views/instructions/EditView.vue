@@ -30,7 +30,7 @@ const {menuHidden} = storeToRefs(store);
 const theme = ref('light');
 
 const pageType = ref('create');
-const title = computed(() => pageType.value === 'create' ? 'instructions.edit.title.new' : 'instructions.edit.title.edit');
+const title = computed(() => pageType.value === 'create' ? 'instructions.title.new' : 'instructions.title.edit');
 const user_types = [
     {title: t('instructions.for_user_type.all'), value: 'all'},
     {title: t('instructions.for_user_type.teacher'), value: 'teacher'},
@@ -57,7 +57,7 @@ const markdown = useField('markdown');
 const onSubmit = handleSubmit(async (values) => {
     let result;
 
-    if(pageType.value === 'create')
+    if (pageType.value === 'create')
         result = await createInstruction(values);
     else {
         Object.keys(values).forEach((key) => {
@@ -69,9 +69,9 @@ const onSubmit = handleSubmit(async (values) => {
 
     if (result !== false)
         menuHidden.value = false;
-        await router.push({name: 'ShowInstruction', params: {id: result.id}}).catch(() => {
-            console.log('Error while routing to ShowInstruction') // TODO: Add error handling
-        });
+    await router.push({name: 'ShowInstruction', params: {id: result.id}}).catch(() => {
+        console.log('Error while routing to ShowInstruction') // TODO: Add error handling
+    });
 }, onInvalidSubmit);
 
 onMounted(async () => {
@@ -111,10 +111,10 @@ watch(fullscreen, () => {
         <DashboardTitle :title_key="title">
             <template v-slot:append>
                 <CrudButton action="index" route-name="IndexInstructions"/>
-                <CrudButton v-if="pageType === 'edit'" action="show" route-name="ShowInstruction"/>
+                <InstructionsDarkModeSwitch v-model="theme"/>
             </template>
             <template v-slot:prepend>
-                <InstructionsDarkModeSwitch v-model="theme"/>
+                <CrudButton v-if="pageType === 'edit'" action="show" route-name="ShowInstruction"/>
                 <CrudButton action="save" route-name="" no-redirect @button-clicked="onSubmit"/>
             </template>
         </DashboardTitle>
@@ -125,35 +125,43 @@ watch(fullscreen, () => {
                     <v-row>
                         <v-col cols="12" md="6">
                             <v-text-field
-                                v-model="name.value.value"
-                                class="ma-auto"
-                                :label="t('instructions.edit.name')"
-                                :error-messages="name.errorMessage.value"/>
+                                    v-model="name.value.value"
+                                    class="ma-auto"
+                                    variant="outlined"
+                                    color="primary"
+                                    :label="t('instructions.attr.name')"
+                                    :error-messages="name.errorMessage.value"/>
                         </v-col>
                         <v-col cols="12" md="6">
                             <v-select
-                                v-model="for_user_type.value.value"
-                                class="ma-auto"
-                                :items="user_types"
-                                :label="t('instructions.for_user_type.title')"
-                                :error-messages="for_user_type.errorMessage.value"/>
+                                    v-model="for_user_type.value.value"
+                                    class="ma-auto"
+                                    variant="outlined"
+                                    color="primary"
+                                    :items="user_types"
+                                    :label="t('instructions.attr.for_user_type')"
+                                    :error-messages="for_user_type.errorMessage.value"/>
                         </v-col>
                     </v-row>
                     <v-text-field
-                        v-model="description.value.value"
-                        class="ma-auto"
-                        :label="t('instructions.edit.description')"
-                        :error-messages="description.errorMessage.value"/>
+                            v-model="description.value.value"
+                            class="ma-auto"
+                            variant="outlined"
+                            color="primary"
+                            :label="t('instructions.attr.description')"
+                            :error-messages="description.errorMessage.value"/>
                 </form>
-<!--                <label>MarkDown</label>-->
+                <!--                <label>MarkDown</label>-->
                 <p v-if="markdown.errorMessage.value" class="text-error"
                    :style="{ fontSize: 'smaller', paddingLeft: '15px' }"
-                >{{markdown.errorMessage.value}}
+                >{{ markdown.errorMessage.value }}
                 </p>
                 <p v-if="markdown.errorMessage.value" class="text-error" style="position: relative;">
-                    <v-divider class="divider-line" :style="{borderTop: '3px',borderColor: 'red', borderStyle: 'solid', opacity: '1'}" />
+                    <v-divider class="divider-line"
+                               :style="{borderTop: '3px',borderColor: 'red', borderStyle: 'solid', opacity: '1'}"/>
                 </p>
-                <MdEditor :theme="theme" ref="editorRef" :noUploadImg="true" language="en-US" v-model="markdown.value.value"/>
+                <MdEditor :theme="theme" ref="editorRef" :noUploadImg="true" language="en-US"
+                          v-model="markdown.value.value"/>
             </v-container>
         </v-card-item>
     </template>

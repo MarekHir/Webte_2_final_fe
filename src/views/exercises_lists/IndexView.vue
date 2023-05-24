@@ -3,20 +3,68 @@ import {useStateStore} from "@/stores/state";
 import {useI18n} from "vue-i18n";
 import DashboardTitle from "@/components/Dashboard/DashboardTitle.vue";
 import {onMounted, ref} from "vue";
-import {fullName} from "@/utils";
 import router from "@/router";
 import CrudButton from "@/components/buttons/CrudButton.vue";
-import {getExerciseLists} from "@/api/exercises_lists";
+import CustomTable from "@/components/CustomTable.vue";
+import ExercisesList from "@/models/ExercisesList";
 
 
 const {t} = useI18n({useScope: 'global'});
 const store = useStateStore();
-const data = ref([]);
+const exercises_lists = ref([]);
+const exercises_options = ref({page: 1, max_page: 1, sort_by: '-updated_at'})
+const headers = [
+    {
+        title: 'teacher.students.attr.icon',
+        key: 'created_by.icon',
+        lodash: true,
+        is_icon: true,
+        header_style: 'width: 5%',
+        no_icon: 'mdi-account-tie',
+    }, {
+        title: 'exercises_list.attr.published_by',
+        key: 'full_name',
+        sortable: true,
+    }, {
+        title: 'exercises_list.attr.name',
+        key: 'name',
+        sortable: true,
+    }, {
+        title: 'exercises_list.attr.points',
+        key: 'points',
+        sortable: true,
+    }, {
+        title: 'exercises_list.attr.is_active',
+        key: 'is_active',
+        trans_value: true,
+        sortable: true,
+    }, {
+        title: 'exercises_list.attr.deadline',
+        key: 'deadline',
+        trans_null: true,
+        default: 'not_set',
+        sortable: true,
+    }, {
+        title: 'exercises_list.attr.initiation',
+        key: 'initiation',
+        trans_null: true,
+        default: 'not_set',
+        sortable: true,
+    }
+]
 
 onMounted(async () => {
-    data.value = await getExerciseLists()
+    await requestData(false);
     await router.isReady();
 });
+
+const requestData = async (refresh_page) => {
+    if (refresh_page) exercises_options.value.page = 1;
+    let data = await ExercisesList.orderBy(exercises_options.value.sort_by).with('created_by').limit(10).page(exercises_options.value.page).get();
+    exercises_options.value.page = data.current_page ?? 1;
+    exercises_options.value.max_page = data.last_page ?? 1;
+    exercises_lists.value = data.data.map(exercise_list => new ExercisesList(exercise_list));
+}
 
 const goToShow = async (id) => {
     await router.push({name: 'ShowExercisesList', params: {id: id}}).catch(() => {
@@ -32,30 +80,9 @@ const goToShow = async (id) => {
     </DashboardTitle>
     <v-divider class="mt-4"/>
     <v-card-item>
-        <v-table>
-            <thead>
-            <tr>
-                <th>{{t('exercises_list.name')}}</th>
-                <th>{{t('exercises_list.points')}}</th>
-                <th>{{t('exercises_list.is_active')}}</th>
-                <th>{{t('exercises_list.deadline')}}</th>
-                <th>{{t('exercises_list.initiation')}}</th>
-                <th>{{t('exercises_list.published_by')}}</th>
-            </tr>
-            </thead>
-            <tbody>
-            <template v-for="exercises_list in data" :key="exercises_list.id">
-                <tr @click="goToShow(exercises_list.id)">
-                    <td>{{ exercises_list.name }}</td>
-                    <td>{{ exercises_list.points }}</td>
-                    <td>{{ t(`bool.${exercises_list.is_active}`) }}</td>
-                    <td>{{ exercises_list.initiation }}</td>
-                    <td>{{ exercises_list.deadline }}</td>
-                    <td>{{ fullName(exercises_list.created_by) }}</td>
-                </tr>
-            </template>
-            </tbody>
-        </v-table>
+        <CustomTable :data="exercises_lists" :headers="headers" v-model:page="exercises_options.page"
+                     @refresh="requestData" v-model:sort-by="exercises_options.sort_by"
+                     :max_page="exercises_options.max_page" @on-click="goToShow"/>
     </v-card-item>
 </template>
 <style scoped>

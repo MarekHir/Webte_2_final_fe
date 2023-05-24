@@ -51,14 +51,14 @@ const onSubmit = handleSubmit(async (values) => {
                             <form @submit.prevent="onSubmit">
                                 <v-row class="py-1">
                                     <v-text-field
-                                            v-model="email.value.value" class="ma-auto"
-                                            :label="t('login.email')"
+                                            v-model="email.value.value" class="ma-auto" color="primary"
+                                            :label="t('login.email')" variant="outlined"
                                             :error-messages="email.errorMessage.value"/>
                                 </v-row>
                                 <v-row class="py-1">
                                     <v-text-field
-                                            v-model="password.value.value" class="ma-auto"
-                                            :label="t('login.password')" type="password"
+                                            v-model="password.value.value" class="ma-auto" color="primary"
+                                            :label="t('login.password')" type="password" variant="outlined"
                                             :error-messages="password.errorMessage.value"/>
                                 </v-row>
                                 <v-row class="py-1">

@@ -33,6 +33,21 @@ const props = defineProps({
         type: String,
         required: false,
         default: null
+    },
+    href: {
+        type: String,
+        required: false,
+        default: null
+    },
+    target: {
+        type: String,
+        required: false,
+        default: null
+    },
+    prepend_icon: {
+        type: String,
+        required: false,
+        default: null
     }
 });
 const emit = defineEmits(['button-clicked']);
@@ -53,11 +68,11 @@ onMounted(async () => {
 });
 
 const redirect = async () => {
-    if(props.noRedirect){
+    if (props.noRedirect) {
         emit('button-clicked');
         return;
     }
-    if(props.id != null){
+    if (props.id != null) {
         await router.push({name: props.routeName, params: {id: props.id}}).catch(() => {
             console.log('Error while routing to ' + props.routeName) // TODO: Add error handling
         });
@@ -72,7 +87,9 @@ const redirect = async () => {
     <v-btn @click="redirect()"
            class="mx-1 my-2"
            variant="outlined"
+           :href="props.href"
+           :target="props.target"
            :text="t(props.title ?? `button.${props.action}`)"
            :color="store.btn_colors[props.action]"
-           :prepend-icon="actionsToIcons[props.action]"/>
+           :prepend-icon="props.prepend_icon ?? actionsToIcons[props.action]"/>
 </template>

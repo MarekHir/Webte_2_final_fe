@@ -35,38 +35,21 @@ const router = createRouter({
             }
         },
         {
-            path: '/teacher',
-            redirect: HomeView,
-            name: 'Teacher',
+            path: '/students',
             meta: {
                 layout: 'Dashboard',
                 allowed: ['teacher'],
             },
             children: [
                 {
-                    path: 'latex/new',
-                    name: 'AddLatexFile',
-                    component: () => import('../views/exercises_lists/EditView.vue'),
+                    path: '',
+                    name: 'IndexStudents',
+                    component: () => import('../views/students/IndexView.vue'),
                 },
                 {
-                    path: 'students',
-                    name: 'TeacherStudentsIndex',
-                    component: () => import('../views/teacher/students/IndexView.vue'),
-                },
-                {
-                    path: 'students/:id',
-                    name: 'TeacherStudentsShow',
-                    component: () => import('../views/teacher/students/ShowView.vue'),
-                },
-                {
-                    path: 'students/exercises',
-                    name: 'StudentsExercises',
-                    component: () => import('../views/teacher/StudentsExercisesView.vue'),
-                },
-                {
-                    path: 'student/:id/exercises',
-                    name: 'StudentExercises',
-                    component: () => import('../views/teacher/StudentExercisesView.vue'),
+                    path: ':id',
+                    name: 'ShowStudents',
+                    component: () => import('../views/students/ShowView.vue'),
                 },
             ]
         },
@@ -85,27 +68,47 @@ const router = createRouter({
                     }
                 },
                 {
+                    path: ':id/student',
+                    name: 'ShowStudentsExercises',
+                    component: () => import('../views/exercises/StudentShowView.vue'),
+                    meta: {
+                        allowed: ['teacher'],
+                    }
+                },
+                {
                     path: 'assigned',
                     name: 'AssignedExercises',
                     component: () => import('../views/exercises/AssignedView.vue'),
+                    meta: {
+                        allowed: ['student'],
+                    }
                 },
                 {
                     path: 'solved',
                     name: 'SolvedExercises',
                     component: () => import('../views/exercises/SolvedView.vue'),
+                    meta: {
+                        allowed: ['student'],
+                    }
                 },
                 {
                     path: 'generate',
                     name: 'GenerateExercises',
                     component: () => import('../views/exercises/GenerateView.vue'),
+                    meta: {
+                        allowed: ['student'],
+                    }
                 },
                 {
-                    path: 'exercise/:id/solve',
+                    path: ':id/solve',
                     name: 'SolveExercise',
                     component: () => import('../views/exercises/SolveView.vue'),
+                    meta: {
+                        allowed: ['student'],
+                    }
                 },
                 {
-                    path: 'exercise/:id',
+                    path: ':id',
                     name: 'ShowExercise',
                     component: () => import('../views/exercises/ShowView.vue'),
                 }

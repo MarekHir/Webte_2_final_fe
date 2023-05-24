@@ -1,11 +1,16 @@
 import {computed, ref} from 'vue'
 import {defineStore} from 'pinia'
 import {useToast} from 'vue-toastification';
+import {useTheme} from "vuetify";
+import i18n from "@/config/i18n";
+import {getUser} from "@/api/auth";
 
 export const useStateStore = defineStore('state', () => {
     const toast = useToast();
     const menuHidden = ref(false);
     const show_keyboard = ref(false);
+    const theme_name = ref('light');
+    const language = ref('en');
     const btn_colors = ref({
         index: 'surface-variant',
         show: 'info',
@@ -16,7 +21,7 @@ export const useStateStore = defineStore('state', () => {
         submit: 'success',
         close: 'dark'
     })
-    const user = ref();
+    const user = ref(null);
     //
     //{id: 2,first_name: 'Marek', surname: 'Hirschner', role: 'admin'}
 
@@ -91,7 +96,18 @@ export const useStateStore = defineStore('state', () => {
         userIcon,
         userPicture,
         userAllowed,
-        show_keyboard
+        show_keyboard,
+        language,
+        theme_name
     };
-}, {persist: { paths: ['user']}})
+}, {
+    persist: {
+        paths: ['user', 'theme_name', 'language'], afterRestore: async (ctx) => {
+            let theme = useTheme()
+            theme.global.name.value = ctx.store.theme_name;
+            i18n.global.locale.value = ctx.store.language;
+            await getUser()
+        }
+    }
+})
 // TODO: Callback refresh user data

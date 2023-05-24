@@ -19,7 +19,7 @@ const props = defineProps({
 <template>
     <v-card-subtitle class="text-center">
         <v-row>
-            <v-col cols="12" lg="4">
+            <v-col cols="12" lg="4" class="d-flex justify-end align-center">
                 <slot name="append">
                 </slot>
             </v-col>
@@ -28,7 +28,7 @@ const props = defineProps({
                     {{ props.subtitle }}
                 </h1>
             </v-col>
-            <v-col cols="12" lg="4">
+            <v-col cols="12" lg="4" class="d-flex justify-end align-center">
                 <slot name="prepend">
                 </slot>
             </v-col>

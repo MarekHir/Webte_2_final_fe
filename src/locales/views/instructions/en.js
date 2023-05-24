@@ -1,6 +1,5 @@
 export default {
     for_user_type: {
-        title: 'Indented for',
         all: 'All',
         student: 'Student',
         teacher: 'Teacher',
@@ -9,15 +8,16 @@ export default {
         edit: 'Edit instruction',
         new: 'New instruction',
     },
+    download_pdf: 'Download PDF',
     name: 'Name',
     description: 'Description',
     indexTitle: 'List of instructions',
     indexDescription: {
         name: 'Name',
         description: 'Description',
-        for: 'Indented for',
         createdBy: 'Created by',
     },
+    paper_color: 'Paper color',
     showTitle: 'Instruction',
     attr: {
         id: 'ID',
@@ -26,7 +26,7 @@ export default {
         updated_at: 'Updated at',
         description: 'Description',
         markdown: 'Markdown',
-        for_user_type: 'For user type',
+        for_user_type: 'Indented for',
         created_by: 'Created by',
         updated_by: 'Updated by',
     },

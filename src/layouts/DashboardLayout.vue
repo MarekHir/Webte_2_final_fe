@@ -17,18 +17,18 @@ import {computed, onMounted, onUnmounted, ref} from "vue";
 
 const {t} = useI18n({useScope: 'global'});
 const store = useStateStore();
-const {user, menuHidden, show_keyboard} = storeToRefs(store);
+const {user, menuHidden, show_keyboard, theme_name} = storeToRefs(store);
 const theme = useTheme();
 const screenWidth = ref(window.innerWidth);
 
 const keyboard_height = computed(() => {
-    if(!show_keyboard.value) {
+    if (!show_keyboard.value) {
         return 0;
-    } else if(screenWidth.value < 470) {
+    } else if (screenWidth.value < 470) {
         return 210;
-    } else if(screenWidth.value < 800) {
+    } else if (screenWidth.value < 800) {
         return 220;
-    } else if(screenWidth.value < 825) {
+    } else if (screenWidth.value < 825) {
         return 250;
     } else {
         return 320;
@@ -53,6 +53,7 @@ const handleLogout = async () => {
 }
 const toggleDarkMode = () => {
     theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark';
+    theme_name.value = theme.global.name.value;
 }
 </script>
 
@@ -99,11 +100,11 @@ const toggleDarkMode = () => {
                         prepend-icon="mdi-book-plus-multiple"
                         :title="t('dashboard.menu.teacher.exercise')"/>
                 <v-list-item
-                        to="/teacher/students"
+                        to="/students"
                         prepend-icon="mdi-account-multiple"
                         :title="t('dashboard.menu.teacher.students')"/>
                 <v-list-item
-                        to="/teacher/students/exercises"
+                        to="/exercises"
                         prepend-icon="mdi-clipboard-multiple-outline"
                         :title="t('dashboard.menu.teacher.student_exercises')"/>
             </v-list>
@@ -111,12 +112,12 @@ const toggleDarkMode = () => {
                 <v-list nav>
                     <v-list-item to="/instructions" prepend-icon="mdi-help-circle-outline"
                                  :title="t('dashboard.menu.instructions')"/>
-                    <ChangeLanguage list_item/>
+                    <ChangeLanguage list_item class="no-select"/>
                     <v-list-item prepend-icon="mdi-theme-light-dark" :title="t(`theme_mode.${theme.global.name.value}`)"
-                                 @click="toggleDarkMode()">
+                                 @click="toggleDarkMode()" class="no-select">
                     </v-list-item>
                     <v-list-item prepend-icon="mdi-logout" @click="handleLogout"
-                                 :title="t('dashboard.menu.logout')"/>
+                                 :title="t('dashboard.menu.logout')" class="no-select"/>
                 </v-list>
             </template>
         </v-navigation-drawer>
@@ -134,5 +135,12 @@ const toggleDarkMode = () => {
 :deep(::-webkit-scrollbar) {
     width: 0;
     background: transparent;
+}
+
+.no-select {
+    -webkit-user-select: none; /* Chrome/Safari/Opera */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
 }
 </style>

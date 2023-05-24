@@ -74,55 +74,67 @@ const onSubmit = handleSubmit(async (values) => {
                                 <v-row class="py-1">
                                     <v-col cols="12" md="6" class="py-0">
                                         <v-text-field
-                                            v-model="first_name.value.value" class="ma-auto"
-                                            append-inner-icon="mdi-account-arrow-left"
-                                            :label="t('registration.first_name')"
-                                            :error-messages="first_name.errorMessage.value"
-                                        /></v-col>
+                                                v-model="first_name.value.value" class="ma-auto"
+                                                append-inner-icon="mdi-account-arrow-left"
+                                                variant="outlined" color="primary"
+                                                :label="t('registration.first_name')"
+                                                :error-messages="first_name.errorMessage.value"
+                                        />
+                                    </v-col>
                                     <v-col cols="12" md="6" class="py-0">
                                         <v-text-field
-                                            v-model="surname.value.value" class="ma-auto"
-                                            append-inner-icon="mdi-account-arrow-right"
-                                            :label="t('registration.surname')"
-                                            :error-messages="surname.errorMessage.value"
-                                        /></v-col>
+                                                v-model="surname.value.value" class="ma-auto"
+                                                append-inner-icon="mdi-account-arrow-right"
+                                                variant="outlined" color="primary"
+                                                :label="t('registration.surname')"
+                                                :error-messages="surname.errorMessage.value"
+                                        />
+                                    </v-col>
                                 </v-row>
                                 <v-row class="py-1">
                                     <v-col cols="12" md="8" class="py-0">
                                         <v-text-field
-                                            v-model="email.value.value" class="ma-auto"
-                                            append-inner-icon="mdi-email"
-                                            :label="t('registration.email')"
-                                            :error-messages="email.errorMessage.value"
-                                        /></v-col>
+                                                v-model="email.value.value" class="ma-auto"
+                                                append-inner-icon="mdi-email"
+                                                variant="outlined" color="primary"
+                                                :label="t('registration.email')"
+                                                :error-messages="email.errorMessage.value"
+                                        />
+                                    </v-col>
                                     <v-col cols="12" md="4" class="py-0">
                                         <v-select
-                                            v-model="role.value.value" class="ma-auto"
-                                            :items="roles"
-                                            :prepend-inner-icon="'mdi-account-' + (role === 'teacher' ? 'tie' : 'school')"
-                                            :label="t('registration.role')"
-                                            :error-messages="role.errorMessage.value"
-                                        /></v-col>
+                                                v-model="role.value.value" class="ma-auto"
+                                                :items="roles"
+                                                variant="outlined" color="primary"
+                                                :prepend-inner-icon="'mdi-account-' + (role === 'teacher' ? 'tie' : 'school')"
+                                                :label="t('registration.role')"
+                                                :error-messages="role.errorMessage.value"
+                                        />
+                                    </v-col>
                                 </v-row>
                                 <v-row class="py-1">
                                     <v-col cols="12" class="py-0">
                                         <v-text-field
-                                            v-model="password.value.value" class="ma-auto"
-                                            append-inner-icon="mdi-lock"
-                                            :label="t('registration.password')" type="password"
-                                            :error-messages="password.errorMessage.value"
-                                        /></v-col>
+                                                v-model="password.value.value" class="ma-auto"
+                                                append-inner-icon="mdi-lock"
+                                                variant="outlined" color="primary"
+                                                :label="t('registration.password')" type="password"
+                                                :error-messages="password.errorMessage.value"
+                                        />
+                                    </v-col>
                                 </v-row>
                                 <v-row class="py-1">
                                     <v-col cols="12" class="py-0">
                                         <v-text-field
-                                            v-model="password_confirmation.value.value"
-                                            type="password"
-                                            class="ma-auto"
-                                            :append-inner-icon="'mdi-lock' + (password === password_confirmation ? '-check' : '-remove')"
-                                            :label="t('registration.password_confirmation')"
-                                            :error-messages="password_confirmation.errorMessage.value"
-                                        /></v-col>
+                                                v-model="password_confirmation.value.value"
+                                                type="password"
+                                                variant="outlined" color="primary"
+                                                class="ma-auto"
+                                                :append-inner-icon="'mdi-lock' + (password === password_confirmation ? '-check' : '-remove')"
+                                                :label="t('registration.password_confirmation')"
+                                                :error-messages="password_confirmation.errorMessage.value"
+                                        />
+                                    </v-col>
                                 </v-row>
                                 <v-row class="py-1">
                                     <v-btn type="submit" class="ma-auto" color="primary">

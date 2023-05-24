@@ -3,15 +3,13 @@
 import {useStateStore} from "@/stores/state";
 import {useI18n} from "vue-i18n";
 import DashboardTitle from "@/components/Dashboard/DashboardTitle.vue";
-import {MdPreview} from "md-editor-v3";
 import {onMounted, ref} from "vue";
 import 'md-editor-v3/lib/style.css';
 import router from "@/router";
-import {getInstruction, deleteInstruction} from "@/api/instructions";
+import {deleteInstruction} from "@/api/instructions";
 import {useRoute} from "vue-router";
 import DashboardSubtitle from "@/components/Dashboard/DashboardSubtitle.vue";
 import CrudButton from "@/components/buttons/CrudButton.vue";
-import DeleteModal from "@/components/DeleteModal.vue";
 import Exercise from "@/models/Exercise";
 import ShowCard from "@/components/ShowCard.vue";
 import MathField from "@/components/MathField.vue";
@@ -22,7 +20,6 @@ const store = useStateStore();
 const exercise = ref(null);
 const loading = ref(true);
 const route = useRoute();
-const delete_modal = ref(false);
 
 const dateFields = [
     {title: 'exercises_list.attr.initiation', key: 'startDate', optional: 'not_set_date'},
@@ -37,7 +34,7 @@ const pointsFields = [
 onMounted(async () => {
     loading.value = true;
     await router.isReady();
-    exercise.value = await Exercise.find(route.params.id);
+    exercise.value = await Exercise.with('created_by').find(route.params.id);
     loading.value = false;
 });
 
@@ -54,15 +51,24 @@ const handleDelete = async () => {
     <template v-if="!loading">
         <DashboardTitle title_key="exercise.show.title">
             <template v-slot:append>
-                <CrudButton action="index" title="exercise.buttons.back_to_assigned" color="surface-variant"
-                            route-name="AssignedExercises"/>
-                <CrudButton action="index" title="exercise.buttons.back_to_solved" color="secondary"
-                            route-name="SolvedExercises"/>
+                <template v-if="store.isStudent">
+                    <CrudButton action="index" title="exercise.buttons.back_to_assigned" color="surface-variant"
+                                route-name="AssignedExercises"/>
+                    <CrudButton action="index" title="exercise.buttons.back_to_solved" color="secondary"
+                                route-name="SolvedExercises"/>
+                </template>
+                <template v-if="store.isTeacher">
+                    <CrudButton action="index" route-name="IndexExercises"/>
+                </template>
             </template>
-            <template v-if="store.user.id === exercise.created_by || store.isAdmin" v-slot:prepend>
-                <CrudButton v-if="exercise.canBeSolved" action="custom" title="exercise.buttons.solve" color="primary"
+            <template v-slot:prepend>
+                <CrudButton v-if="(store.user.id === exercise.created_by.id || store.isAdmin) && exercise.canBeSolved"
+                            action="custom" title="exercise.buttons.solve" color="primary"
                             variant="elevated"
                             route-name="SolveExercise" :id="$props.id"/>
+                <CrudButton v-if="store.isTeacher" action="show" title="exercise.student.show_student"
+                            route-name="ShowStudents"
+                            :id="exercise.created_by.id"/>
             </template>
         </DashboardTitle>
         <DashboardSubtitle
@@ -75,13 +81,23 @@ const handleDelete = async () => {
             <v-container>
                 <ShowCard :object="exercise" title="exercise.show.dates" :fields="dateFields"/>
                 <ShowCard filter_empty title="exercise.show.points" :fields="pointsFields" :object="exercise"/>
-                <ShowCard v-if="exercise.solved" title="exercise.show.solution" :object="exercise">
-                    <v-row>
-                        <v-col cols="12" class="d-flex justify-center align-center">
-                            <math-field v-model="exercise.solution" read-only class="border-0 my-4 mx-auto"/>
-                        </v-col>
-                    </v-row>
-                </ShowCard>
+                <template v-if="exercise.solved">
+                    <ShowCard title="exercise.show.solution">
+                        <v-row>
+                            <v-col cols="12" class="d-flex justify-center align-center">
+                                <math-field v-model="exercise.solution" read-only class="border-0 my-4 mx-auto"/>
+                            </v-col>
+                            <template v-if="exercise.description">
+                                <div class="w-33 mx-auto">
+                                    <v-divider/>
+                                </div>
+                                <v-col cols="12">
+                                    <h3 class="text-center text-h5">{{ exercise.description }}</h3>
+                                </v-col>
+                            </template>
+                        </v-row>
+                    </ShowCard>
+                </template>
             </v-container>
         </v-card-item>
     </template>

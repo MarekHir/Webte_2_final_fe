@@ -11,6 +11,7 @@ import CrudButton from "@/components/buttons/CrudButton.vue";
 import DeleteModal from "@/components/DeleteModal.vue";
 import {fullName} from "@/utils";
 import {deleteExerciseList, getExerciseList} from "@/api/exercises_lists";
+import ShowCard from "@/components/ShowCard.vue";
 
 
 const {t} = useI18n({useScope: 'global'});
@@ -19,6 +20,30 @@ const exercise = ref(null);
 const loading = ref(true);
 const route = useRoute();
 const delete_modal = ref(false);
+const points_card = [
+    {
+        title: 'exercises_list.attr.points',
+        key: 'points',
+        optional: 'not_set',
+    },
+    {
+        title: 'exercises_list.attr.is_active',
+        key: 'is_active',
+        trans_value: true,
+    }
+]
+const deadlines_card = [
+    {
+        title: 'exercises_list.attr.initiation',
+        key: 'initiation',
+        optional: 'not_set',
+    },
+    {
+        title: 'exercises_list.attr.deadline',
+        key: 'deadline',
+        optional: 'not_set',
+    }
+]
 
 // TODO: Add loading everywhere
 onMounted(async () => {
@@ -56,59 +81,10 @@ const handleDelete = async () => {
         <v-divider class="mt-4"/>
         <v-card-item>
             <v-container>
-                <v-card class="pa-4 mb-4">
-                    <v-card-item>
-                        <v-list class="w-100">
-                            <h3 class="text-h5 text-center">{{ t('exercises_list.description') }}</h3>
-                            <v-divider class="my-2"/>
-                            <h3 class="text-h5 text-center">{{ exercise.description || t('not_set') }}</h3>
-                        </v-list>
-                    </v-card-item>
-                </v-card>
-                <v-card class="pa-4 my-4">
-                    <v-card-item>
-                        <v-row>
-                            <v-col cols="12" md="6" class="d-flex justify-center align-center">
-                                <v-list class="w-100">
-                                    <h3 class="text-h5 text-center">{{ t('exercises_list.points') }}</h3>
-                                    <v-divider class="w-75 mx-auto my-2"/>
-                                    <h3 class="text-h5 text-center">{{ exercise.points || t('not_set') }}</h3>
-                                </v-list>
-                            </v-col>
-                            <v-divider vertical/>
-                            <v-col cols="12" md="6" class="d-flex justify-center align-center">
-                                <v-list class="w-100">
-                                    <h3 class="text-h5 text-center">{{ t('exercises_list.is_active') }}</h3>
-                                    <v-divider class="w-75 mx-auto my-2"/>
-                                    <h3 class="text-h5 text-center">{{
-                                        t(`bool.${exercise.is_active}`) || t('not_set')
-                                        }}</h3>
-                                </v-list>
-                            </v-col>
-                        </v-row>
-                    </v-card-item>
-                </v-card>
-                <v-card class="pa-4 my-4">
-                    <v-card-item>
-                        <v-row>
-                            <v-col cols="12" md="6" class="d-flex justify-center align-center">
-                                <v-list class="w-100">
-                                    <h3 class="text-h5 text-center">{{ t('exercises_list.initiation') }}</h3>
-                                    <v-divider class="w-75 mx-auto my-2"/>
-                                    <h3 class="text-h5 text-center">{{ exercise.initiation || t('not_set') }}</h3>
-                                </v-list>
-                            </v-col>
-                            <v-divider vertical/>
-                            <v-col cols="12" md="6" class="d-flex justify-center align-center">
-                                <v-list class="w-100">
-                                    <h3 class="text-h5 text-center">{{ t('exercises_list.deadline') }}</h3>
-                                    <v-divider class="w-75 mx-auto my-2"/>
-                                    <h3 class="text-h5 text-center">{{ exercise.deadline || t('not_set') }}</h3>
-                                </v-list>
-                            </v-col>
-                        </v-row>
-                    </v-card-item>
-                </v-card>
+                <ShowCard :object="exercise" title="exercises_list.attr.description"
+                          :fields="[{key: 'description', optional: 'not_set'}]"/>
+                <ShowCard :object="exercise" :fields="points_card"/>
+                <ShowCard :object="exercise" :fields="deadlines_card"/>
             </v-container>
         </v-card-item>
         <DeleteModal :dialog="delete_modal" @close="delete_modal = false" @delete="handleDelete"/>

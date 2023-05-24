@@ -2,20 +2,6 @@ import api from "@/config/axios";
 import {useStateStore} from "@/stores/state";
 import i18n from "@/config/i18n";
 
-export const getInstructions = async () => {
-    const store = useStateStore();
-    let result = [];
-
-    await api.get(`/api/${i18n.global.locale.value}/instructions`)
-        .then((response) => {
-            result = response.data;
-        }).catch((error) => {
-            store.addAlert(error.response.data.message, 'error');
-        });
-
-    return result;
-}
-
 export const getInstruction = async (id) => {
     const store = useStateStore();
     let result = null;

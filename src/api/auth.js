@@ -10,7 +10,7 @@ export const login = async (data) => {
     let network_error = await api.get('/sanctum/csrf-cookie')
         .then(() => false).catch(() => true);
 
-    if(network_error){
+    if (network_error) {
         store.addAlert(i18n.global.t('error.failed_connection'), 'error');
         return false;
     }
@@ -57,7 +57,7 @@ export const register = async (data) => {
     let network_error = await api.get('/sanctum/csrf-cookie')
         .then(() => false).catch(() => true);
 
-    if(network_error){
+    if (network_error) {
         store.addAlert(i18n.global.t('error.failed_connection'), 'error');
         return false;
     }
@@ -78,4 +78,14 @@ export const register = async (data) => {
         });
 
     return result;
+}
+
+export const getUser = async () => {
+    const store = useStateStore();
+
+    await api.get(`/api/${i18n.global.locale.value}/auth/user`).then(response => {
+        store.login(response.data);
+    }).catch(error => {
+        store.logout();
+    });
 }

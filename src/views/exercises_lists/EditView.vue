@@ -15,11 +15,11 @@ const {t} = useI18n({useScope: 'global'});
 const route = useRoute();
 const loading = ref(true);
 const exercise = ref(null);
-
+const editPage = computed(() => pageType.value === 'edit');
 const pageType = ref('create');
 const title = computed(() => pageType.value === 'create' ? 'exercises_list.new.title' : 'exercises_list.edit.title');
 
-const schema = yup.object({
+const create_schema = yup.object({
     files: yup.array().required(),
     images: yup.array().nullable(),
     name: yup.string().required().min(5).max(30),
@@ -33,8 +33,20 @@ const schema = yup.object({
     }),
 });
 
+const edit_schema = yup.object({
+    name: yup.string().required().min(5).max(30),
+    description: yup.string().required().min(10).max(150),
+    points: yup.number().required().min(0),
+    is_active: yup.boolean().nullable(),
+    initiation: yup.date().nullable(),
+    deadline: yup.date().nullable().test('is-greater', 'Initiation must be before deadline', function (value) {
+        const initiation = this.resolve(yup.ref('initiation'));
+        return !initiation || !value || initiation <= value;
+    }),
+});
+
 const {handleSubmit} = useForm({
-    validationSchema: schema
+    validationSchema: editPage ? edit_schema : create_schema,
 });
 
 const files = useField('files');
@@ -49,10 +61,9 @@ const deadline = useField('deadline');
 const onSubmit = handleSubmit(async (values) => {
     let result;
 
-    console.log(values['is_active'])
-    values['is_active'] = values['is_active'] != null ? 'true' : 'false';
 
     if (pageType.value === 'create') {
+        values['is_active'] = values['is_active'] != null ? 'true' : 'false';
         values.file = values['files'][0];
         delete values['files'];
 
@@ -80,7 +91,7 @@ const onSubmit = handleSubmit(async (values) => {
 onMounted(async () => {
     loading.value = true;
     await router.isReady();
-    if (route.name === 'EditExercisesSet') {
+    if (route.name === 'EditExercisesList') {
         // TODO: Find better way
         exercise.value = await getExerciseList(route.params.id);
         name.value.value = exercise.value.name;
@@ -100,9 +111,9 @@ onMounted(async () => {
         <DashboardTitle :title_key="title">
             <template v-slot:append>
                 <CrudButton action="index" route-name="IndexExercisesLists"/>
-                <CrudButton v-if="pageType === 'edit'" action="show" route-name="ShowExercisesList"/>
             </template>
             <template v-slot:prepend>
+                <CrudButton v-if="editPage" action="show" route-name="ShowExercisesList"/>
                 <CrudButton action="save" route-name="" no-redirect @button-clicked="onSubmit"/>
             </template>
         </DashboardTitle>
@@ -116,15 +127,15 @@ onMounted(async () => {
                                     v-model="name.value.value"
                                     variant="outlined"
                                     color="primary"
-                                    :label="t('exercises_list.name')"
+                                    :label="t('exercises_list.attr.name')"
                                     :error-messages="name.errorMessage.value"/>
                         </v-col>
                         <v-col cols="12" md="2" class="d-flex justify-center align-center">
                             <v-switch
-                                v-model="is_active.value.value"
-                                color="primary"
-                                :label="t('exercises_list.is_active')"
-                                :error-messages="is_active.errorMessage.value"/>
+                                    v-model="is_active.value.value"
+                                    color="primary"
+                                    :label="t('exercises_list.attr.is_active')"
+                                    :error-messages="is_active.errorMessage.value"/>
                         </v-col>
                         <v-col cols="12" md="4" class="d-flex justify-center align-center">
                             <v-text-field
@@ -133,26 +144,26 @@ onMounted(async () => {
                                     color="primary"
                                     v-model="points.value.value"
                                     class="ma-auto"
-                                    :label="t('exercises_list.points')"
+                                    :label="t('exercises_list.attr.points')"
                                     :error-messages="points.errorMessage.value"/>
                         </v-col>
                     </v-row>
                     <v-row>
-                        <v-col cols="12" md="8" class="d-flex justify-center align-center">
+                        <v-col cols="12" :md="editPage ? 12 : 8" class="d-flex justify-center align-center">
                             <v-text-field
                                     v-model="description.value.value"
                                     variant="outlined"
                                     color="primary"
-                                    :label="t('exercises_list.description')"
+                                    :label="t('exercises_list.attr.description')"
                                     class="mt-2"
                                     :error-messages="description.errorMessage.value"/>
                         </v-col>
-                        <v-col cols="12" md="4" class="d-flex justify-center align-center">
+                        <v-col v-if="!editPage" cols="12" md="4" class="d-flex justify-center align-center">
                             <v-file-input
                                     class="mt-2"
                                     v-model="files.value.value"
                                     color="primary"
-                                    :label="t('exercises_list.fileInput')"
+                                    :label="t('exercises_list.attr.fileInput')"
                                     clearable
                                     prepend-icon=""
                                     append-inner-icon="mdi-paperclip"
@@ -168,13 +179,13 @@ onMounted(async () => {
                             </v-file-input>
                         </v-col>
                     </v-row>
-                    <v-row>
+                    <v-row v-if="!editPage">
                         <v-col cols="12">
                             <v-file-input
                                     v-model="images.value.value"
                                     color="primary"
                                     counter clearable multiple
-                                    :label="t('exercises_list.imageInput.title')"
+                                    :label="t('exercises_list.attr.imageInput.title')"
                                     accept=".jpg,.png,.jpeg,.gif"
                                     variant="outlined"
                                     prepend-icon=""
@@ -190,7 +201,7 @@ onMounted(async () => {
                                         <span v-else-if="index === 5" class="text-overline text-grey-darken-3 mx-2">
                                         +{{
                                             images.value.value.length - 5
-                                            }} {{ t('exercises_list.edit.imageInput.count') }}
+                                            }} {{ t('exercises_list.attr.imageInput.count') }}
                                     </span>
                                     </template>
                                 </template>
@@ -200,24 +211,30 @@ onMounted(async () => {
                     <v-row>
                         <v-col cols="12" md="6" class="d-flex justify-center align-center">
                             <v-text-field
+                                    :hint="t('exercises_list.edit.date_hint')"
+                                    persistent-hint
+                                    persistent-clear
                                     type="datetime-local"
                                     variant="outlined"
                                     v-model="initiation.value.value"
                                     color="primary"
                                     class="ma-auto"
                                     clearable
-                                    :label="t('exercises_list.initiation')"
+                                    :label="t('exercises_list.attr.initiation')"
                                     :error-messages="initiation.errorMessage.value"/>
                         </v-col>
                         <v-col cols="12" md="6" class="d-flex justify-center align-center">
                             <v-text-field
+                                    :hint="t('exercises_list.edit.date_hint')"
+                                    persistent-hint
+                                    persistent-clear
                                     type="datetime-local"
                                     variant="outlined"
                                     color="primary"
                                     clearable
                                     v-model="deadline.value.value"
                                     class="ma-auto"
-                                    :label="t('exercises_list.deadline')"
+                                    :label="t('exercises_list.attr.deadline')"
                                     :error-messages="deadline.errorMessage.value"/>
                         </v-col>
                     </v-row>

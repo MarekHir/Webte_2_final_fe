@@ -1,11 +1,12 @@
-import Model from './Model'
+import Exercise from "@/models/Exercise";
+import User from "@/models/User";
 
-export default class Student extends Model {
-  get fullName() {
-    return this.first_name + ' ' + this.surname;
-  }
+export default class Student extends User {
+    exercises() {
+        return this.hasMany(Exercise);
+    }
 
-  resource() {
-    return 'students'
-  }
+    resource() {
+        return 'students'
+    }
 }
