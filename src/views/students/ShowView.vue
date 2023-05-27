@@ -118,11 +118,11 @@ const goToExercises = async () => {
 </template>
 <style scoped>
 .link {
-    color: v-bind('theme.current.value.colors["on-surface"]');
+    color: v-bind('theme.current.value.colors["primary"]');
     cursor: pointer;
 }
 
 .link:hover {
-    color: v-bind('theme.current.value.colors["primary"]');
+    color: v-bind('theme.current.value.colors["secondary"]');
 }
 </style>

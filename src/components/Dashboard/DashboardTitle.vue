@@ -10,11 +10,15 @@ const props = defineProps({
     trans_options: {
         type: Object,
         default: () => ({})
+    },
+    class: {
+        type: String,
+        default: ''
     }
 });
 </script>
 <template>
-    <v-card-title class="text-center">
+    <v-card-title class="text-center" :class="props.class">
         <v-row>
             <v-col cols="12" lg="4" class="d-flex justify-start align-center">
                 <slot name="append">

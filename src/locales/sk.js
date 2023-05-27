@@ -1,4 +1,4 @@
-import { sk } from 'vuetify/locale'
+import {sk} from 'vuetify/locale'
 import login from "@/locales/views/auth/login/sk";
 import registration from "@/locales/views/auth/registration/sk";
 import dashboard from "@/locales/layouts/dashboard/sk";
@@ -33,10 +33,8 @@ export default {
         },
         failed_connection: 'Nepodarilo sa pripojiť na server',
     },
-    bool: {
-        true: 'Áno',
-        false: 'Nie',
-    },
+    true: 'Áno',
+    false: 'Nie',
     not_set: 'Nie je nastavené',
     button: {
         index: 'Späť na zoznam',

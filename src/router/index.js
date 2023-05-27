@@ -147,6 +147,19 @@ const router = createRouter({
             ],
         },
         {
+            path: '/user',
+            meta: {
+                layout: 'Dashboard',
+            },
+            children: [
+                {
+                    path: 'profile',
+                    name: 'UserProfile',
+                    component: () => import('../views/user/ProfileView.vue'),
+                },
+            ],
+        },
+        {
             path: '/instructions',
             meta: {
                 layout: 'Dashboard'

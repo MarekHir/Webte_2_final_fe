@@ -8,7 +8,7 @@ import router from "@/router";
 import {useRoute} from "vue-router";
 import DashboardSubtitle from "@/components/Dashboard/DashboardSubtitle.vue";
 import CrudButton from "@/components/buttons/CrudButton.vue";
-import DeleteModal from "@/components/DeleteModal.vue";
+import DeleteModal from "@/components/Modals/DeleteModal.vue";
 import {fullName} from "@/utils";
 import {deleteExerciseList, getExerciseList} from "@/api/exercises_lists";
 import ShowCard from "@/components/ShowCard.vue";

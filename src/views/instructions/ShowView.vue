@@ -11,7 +11,7 @@ import {deleteInstruction} from "@/api/instructions";
 import {useRoute} from "vue-router";
 import DashboardSubtitle from "@/components/Dashboard/DashboardSubtitle.vue";
 import CrudButton from "@/components/buttons/CrudButton.vue";
-import DeleteModal from "@/components/DeleteModal.vue";
+import DeleteModal from "@/components/Modals/DeleteModal.vue";
 import InstructionsDarkModeSwitch from "@/components/InstructionsDarkModeSwitch.vue";
 import Instruction from "@/models/Instruction";
 

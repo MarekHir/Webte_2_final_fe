@@ -62,9 +62,11 @@ const toggleDarkMode = () => {
         <v-navigation-drawer v-model:temporary="menuHidden" rail expand-on-hover permanent class="">
             <v-list>
                 <v-list-item
+                        :to="{name: 'UserProfile'}"
                         :prepend-avatar="store.userPicture"
                         :prepend-icon="store.userPicture ? '' : store.userIcon"
                         :title="store.fullName"
+                        class="no-select"
                         :subtitle="t('user.role.' + user.role)"/>
             </v-list>
             <v-divider/>

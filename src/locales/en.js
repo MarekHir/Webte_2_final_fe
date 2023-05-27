@@ -6,10 +6,13 @@ import teacher from "@/locales/views/teacher/en";
 import instructions from '@/locales/views/instructions/en'
 import exercises_list from '@/locales/views/exercises_lists/en'
 import exercise from '@/locales/views/exercise/en'
+import user from '@/locales/user/en';
+import home from '@/locales/views/home/en';
 
 export default {
     login: login,
     registration: registration,
+    home: home,
     instructions: instructions,
     exercises_list: exercises_list,
     exercise: exercise,
@@ -19,13 +22,7 @@ export default {
         sk: 'Slovak',
     },
     dashboard: dashboard,
-    user: {
-        role: {
-            admin: 'Admin',
-            teacher: 'Teacher',
-            student: 'Student',
-        }
-    },
+    user: user,
     error: {
         forbidden: 'You are not authorized to access this page.',
         unauthorized: 'You are not authorized to access this page. Please login first.',

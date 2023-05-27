@@ -17,7 +17,10 @@ export default {
         description: 'Description',
         createdBy: 'Created by',
     },
-    paper_color: 'Paper color',
+    buttons: {
+        preview_color: 'Preview color',
+        editor_color: 'Editor color',
+    },
     showTitle: 'Instruction',
     attr: {
         id: 'ID',

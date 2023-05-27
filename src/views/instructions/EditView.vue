@@ -111,7 +111,7 @@ watch(fullscreen, () => {
         <DashboardTitle :title_key="title">
             <template v-slot:append>
                 <CrudButton action="index" route-name="IndexInstructions"/>
-                <InstructionsDarkModeSwitch v-model="theme"/>
+                <InstructionsDarkModeSwitch editor v-model="theme"/>
             </template>
             <template v-slot:prepend>
                 <CrudButton v-if="pageType === 'edit'" action="show" route-name="ShowInstruction"/>

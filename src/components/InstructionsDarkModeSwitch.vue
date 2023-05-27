@@ -8,7 +8,16 @@ import {useI18n} from "vue-i18n";
 const theme = useTheme();
 const local_theme = ref(theme.global.name.value);
 const {t} = useI18n();
-const props = defineProps(['modelValue']);
+const props = defineProps({
+    modelValue: {
+        type: String,
+        required: true
+    }, editor: {
+        type: Boolean,
+        required: false,
+        default: false
+    }
+});
 const emit = defineEmits(['update:modelValue']);
 
 onMounted(() => {
@@ -31,5 +40,5 @@ watch(theme.global.name, (value, oldValue) => {
 
 <template>
     <v-btn variant="outlined" @click="switchTheme()" color="secondary" prepend-icon="mdi-theme-light-dark"
-           :text="t('instructions.paper_color')"/>
+           :text="t(props.editor ? 'instructions.buttons.editor_color' : 'instructions.buttons.preview_color')"/>
 </template>

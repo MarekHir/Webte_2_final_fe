@@ -13,12 +13,14 @@ import CrudButton from "@/components/buttons/CrudButton.vue";
 import Exercise from "@/models/Exercise";
 import ShowCard from "@/components/ShowCard.vue";
 import MathField from "@/components/MathField.vue";
+import EditPointsModal from "@/components/Modals/EditPointsModal.vue";
 
 
 const {t} = useI18n({useScope: 'global'});
 const store = useStateStore();
 const exercise = ref(null);
 const loading = ref(true);
+const edit_modal = ref(false)
 const route = useRoute();
 
 const dateFields = [
@@ -34,9 +36,13 @@ const pointsFields = [
 onMounted(async () => {
     loading.value = true;
     await router.isReady();
-    exercise.value = await Exercise.with('created_by').find(route.params.id);
+    await refreshData()
     loading.value = false;
 });
+
+const refreshData = async () => {
+    exercise.value = await Exercise.with('created_by').find(route.params.id);
+}
 
 const handleDelete = async () => {
     if (await deleteInstruction(exercise.value.id))
@@ -74,8 +80,11 @@ const handleDelete = async () => {
         <DashboardSubtitle
                 :subtitle="exercise.name"
                 subtitle_size="h4"
-                :description="exercise.tastDescription"
-        />
+                :description="exercise.tastDescription">
+            <template v-if="exercise.solved && store.isTeacher" v-slot:prepend>
+                <CrudButton action="edit" no-redirect title="exercise.buttons.change_points" @button-clicked="edit_modal = true"/>
+            </template>
+        </DashboardSubtitle>
         <v-divider class="mt-2"/>
         <v-card-item>
             <v-container>
@@ -100,5 +109,6 @@ const handleDelete = async () => {
                 </template>
             </v-container>
         </v-card-item>
+        <EditPointsModal @refresh="refreshData" :exercise="exercise" @close="edit_modal = false" v-model:dialog="edit_modal"/>
     </template>
 </template>

@@ -67,7 +67,6 @@ const onSubmit = handleSubmit(async (values) => {
         values.file = values['files'][0];
         delete values['files'];
 
-        console.log(values)
         if (!values.images || values.images.length === 0)
             values.images = [];
 
@@ -186,7 +185,7 @@ onMounted(async () => {
                                     color="primary"
                                     counter clearable multiple
                                     :label="t('exercises_list.attr.imageInput.title')"
-                                    accept=".jpg,.png,.jpeg,.gif"
+                                    accept=".jpg,.jpeg,.jfif,.pjpeg,.pjp,.png,.svg,.webp,.gif,.avif,.apng"
                                     variant="outlined"
                                     prepend-icon=""
                                     append-inner-icon="mdi-image-multiple"

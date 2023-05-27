@@ -29,3 +29,15 @@ export const getStudent = async (id) => {
 
     return result;
 }
+
+export const uploadIcon = async (image, id) => {
+    const store = useStateStore();
+    let formData = new FormData();
+    formData.append('image', image);
+    await api.post(`/api/${i18n.global.locale.value}/users/${id}`, formData, {headers: {'content-type': 'multipart/form-data'}})
+        .then((response) => {
+            store.addAlert(response.data.message, 'success');
+        }).catch((error) => {
+            store.addAlert(error.response.data.message, 'error');
+        });
+}

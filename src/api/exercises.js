@@ -16,3 +16,17 @@ export const generateExercises = async (data) => {
 
     return result;
 }
+
+export const getDashboard = async () => {
+    const store = useStateStore();
+    let result = {};
+
+    await api.get(`/api/${i18n.global.locale.value}/dashboard/teacher`)
+        .then((response) => {
+            result = response.data;
+        }).catch((error) => { // TODO error handling
+            store.addAlert(error.response.data.message, 'error');
+        });
+
+    return result;
+}

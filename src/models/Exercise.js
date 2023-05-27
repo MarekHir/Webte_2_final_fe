@@ -51,6 +51,10 @@ export default class Exercise extends Model {
         return this.solved === false && this.exercises_lists?.canBeSolved;
     }
 
+    get createdBy() {
+        return this.created_by?.fullName;
+    }
+
     relations() {
         return {
             created_by: Student,

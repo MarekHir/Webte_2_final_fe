@@ -5,6 +5,10 @@ export default class User extends Model {
         return this.first_name + ' ' + this.surname;
     }
 
+    get roleKey() {
+        return `user.role.${this.role}`;
+    }
+
     resource() {
         return 'users'
     }
