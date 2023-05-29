@@ -44,7 +44,6 @@ const headers = ref([
     }
 ]);
 
-// TODO: Add loading everywhere
 onMounted(async () => {
     loading.value = true;
     await router.isReady();

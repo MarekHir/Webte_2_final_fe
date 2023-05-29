@@ -10,6 +10,8 @@ export default {
     email: 'Email',
     password: 'Heslo',
     password_confirmation: 'Potvrdenie hesla',
+    password_match: 'Heslá sa nezhodujú',
+    role_invalid: 'Neplatný typ účtu',
     submit: 'Registrácia',
     login: {
         text: 'Už máte účet?',

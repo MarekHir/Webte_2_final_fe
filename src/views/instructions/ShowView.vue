@@ -24,7 +24,6 @@ const route = useRoute();
 const delete_modal = ref(false);
 const theme = ref('light');
 
-// TODO: Add loading everywhere
 onMounted(async () => {
     loading.value = true;
     await router.isReady();
@@ -47,7 +46,7 @@ const handleDelete = async () => {
                 <CrudButton action="index" route-name="IndexInstructions"/>
                 <InstructionsDarkModeSwitch v-model="theme"/>
             </template>
-            <template v-if="store.user.id === instruction.created_by.id || store.isAdmin" v-slot:prepend>
+            <template v-if="store.user.id === instruction.created_by?.id || store.isAdmin" v-slot:prepend>
                 <CrudButton action="edit" route-name="EditInstruction" :id="$props.id"/>
                 <CrudButton action="delete" @button-clicked="delete_modal = true" route-name="" no-redirect
                             :id="$props.id"/>

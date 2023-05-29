@@ -10,6 +10,8 @@ export default {
     email: 'Email',
     password: 'Password',
     password_confirmation: 'Password confirmation',
+    password_match: 'Passwords do not match',
+    role_invalid: 'Invalid account type',
     submit: 'Register',
     login: {
         text: 'Already have an account?',

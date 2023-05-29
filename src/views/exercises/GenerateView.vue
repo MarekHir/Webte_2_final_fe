@@ -19,7 +19,6 @@ const exercises_lists = ref([])
 const selected_exercises = ref([])
 const alert_color = ref('')
 
-// TODO: Add loading everywhere
 onMounted(async () => {
     loading.value = true;
     exercises_lists.value = (await ExercisesList.where({is_active: true}).get()).data

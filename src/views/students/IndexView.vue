@@ -32,6 +32,10 @@ const headers = ref([
         title: 'teacher.students.attr.surname',
         key: 'surname',
         sortable: true,
+    },{
+        title: 'teacher.students.attr.email',
+        key: 'email',
+        sortable: true,
     }, {
         title: 'teacher.students.attr.num_of_gen_exercises',
         key: 'num_of_exercises',

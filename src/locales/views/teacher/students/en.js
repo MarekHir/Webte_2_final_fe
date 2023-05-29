@@ -1,5 +1,3 @@
-import registration from "@/locales/views/auth/Registration/en";
-
 export default {
     index: {
         title: 'Students',
@@ -24,6 +22,7 @@ export default {
         id: 'ID',
         full_name: 'Student\'s name',
         first_name: 'First name',
+        email: 'Email',
         surname: 'Surname',
         num_of_gen_exercises: 'Number of generated exercises',
         total_earned_points: 'Total earned points',

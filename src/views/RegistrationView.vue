@@ -6,28 +6,33 @@ import {useField, useForm} from "vee-validate";
 import * as yup from 'yup';
 import YupPassword from 'yup-password';
 import {useStateStore} from "@/stores/state";
-import {ref} from "vue";
+import {computed, ref, watch} from "vue";
+import {getLocaleMessagesForNamespace, onInvalidSubmit} from "@/utils";
 
 YupPassword(yup);
 
-const {t} = useI18n({useScope: 'global'});
+const {t, locale} = useI18n({useScope: 'global'});
 const store = useStateStore();
 
-const schema = yup.object().shape({
-    first_name: yup.string().required().min(5).max(30),
-    surname: yup.string().required().min(5).max(30),
 
-    email: yup.string().email().required(),
-    password: yup.string().required().min(5).max(30)
-        .minLowercase(1, 'password must contain at least 1 lower case letter')
-        .minUppercase(1, 'password must contain at least 1 upper case letter')
-        .minNumbers(1, 'password must contain at least 1 number')
-        .minSymbols(1, 'password must contain at least 1 special character'),
-    password_confirmation: yup.string().required().oneOf([yup.ref('password'), null], 'Passwords must match'),
-    role: yup.string().required(),
-});
+yup.setLocale(getLocaleMessagesForNamespace('registration'));
 
-const {handleSubmit} = useForm({
+const schema = computed(() => {
+    return yup.object({
+            first_name: yup.string().required().min(5).max(30),
+            surname: yup.string().required().min(5).max(30),
+
+            email: yup.string().email().required(),
+            password: yup.string().required().min(8).max(30).minLowercase(1,).minUppercase(1,)
+                .minNumbers(1,).minSymbols(1,),
+            password_confirmation: yup.string().required()
+                .oneOf([yup.ref('password'), null], t('registration.password_match')),
+            role: yup.string().required().oneOf(['student', 'teacher'], t('registration.role_invalid')),
+        }
+    );
+})
+
+const {handleSubmit, validate} = useForm({
     validationSchema: schema
 });
 
@@ -43,22 +48,15 @@ const email = useField('email');
 const password = useField('password');
 const password_confirmation = useField('password_confirmation');
 
-
-function onInvalidSubmit({errors}) {
-    if (errors == null || errors.length === 0)
-        return;
-
-    Object.keys(errors).forEach((field_key) => {
-        store.addAlert(errors[field_key], 'warning');
-    });
-}
-
 const onSubmit = handleSubmit(async (values) => {
     let result = await register(values);
     if (result === true)
         await router.push({name: 'Home'});
 }, onInvalidSubmit);
 
+watch(locale, () => {
+    validate();
+})
 </script>
 <template>
     <v-container fluid class="fill-height">
@@ -130,7 +128,7 @@ const onSubmit = handleSubmit(async (values) => {
                                                 type="password"
                                                 variant="outlined" color="primary"
                                                 class="ma-auto"
-                                                :append-inner-icon="'mdi-lock' + (password === password_confirmation ? '-check' : '-remove')"
+                                                :append-inner-icon="'mdi-lock' + (password.value.value === password_confirmation.value.value ? '-check' : '-remove')"
                                                 :label="t('registration.password_confirmation')"
                                                 :error-messages="password_confirmation.errorMessage.value"
                                         />

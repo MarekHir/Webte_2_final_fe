@@ -45,7 +45,6 @@ const deadlines_card = [
     }
 ]
 
-// TODO: Add loading everywhere
 onMounted(async () => {
     loading.value = true;
     await router.isReady();
@@ -67,7 +66,7 @@ const handleDelete = async () => {
             <template v-slot:append>
                 <CrudButton action="index" route-name="IndexExercisesLists"/>
             </template>
-            <template v-if="(store.user.id === exercise.created_by.id && store.isStudent)|| store.isAdmin"
+            <template v-if="(store.user.id === exercise.created_by?.id && store.isTeacher)|| store.isAdmin"
                       v-slot:prepend>
                 <CrudButton action="edit" route-name="EditExercisesList" :id="$props.id"/>
                 <CrudButton action="delete" @button-clicked="delete_modal = true" route-name="" no-redirect

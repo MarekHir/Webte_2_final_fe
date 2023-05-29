@@ -1,6 +1,7 @@
 import Model from '@/models/Model';
 import ExercisesListSection from "@/models/ExercisesListSection";
 import Student from "@/models/Student";
+import {format} from "date-fns";
 
 
 export default class ExercisesList extends Model {
@@ -15,6 +16,14 @@ export default class ExercisesList extends Model {
 
     get createdBy() {
         return this.created_by.fullName;
+    }
+
+    get initiationDate() {
+        return this.initiation ? format(this.initiation, 'dd.MM.yyyy HH:mm') : null;
+    }
+
+    get deadlineDate() {
+        return this.deadline ? format(this.deadline, 'dd.MM.yyyy HH:mm') : null;
     }
 
     constructor(...args) {

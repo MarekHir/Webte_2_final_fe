@@ -12,18 +12,19 @@ import DashboardSubtitle from "@/components/Dashboard/DashboardSubtitle.vue";
 import CrudButton from "@/components/buttons/CrudButton.vue";
 import katex from 'katex'
 import 'katex/dist/katex.min.css'
+import {storeToRefs} from "pinia";
 
 
 const {t} = useI18n({useScope: 'global'});
 const store = useStateStore();
+const {show_keyboard} = storeToRefs(store);
 const loading = ref(true);
 const route = useRoute();
 const exercise = ref();
 const mathValue = ref('');
-const description = ref('')
+const description = ref('');
 const taskContainer = ref(null)
 
-// TODO: Add loading everywhere
 onMounted(async () => {
     loading.value = true;
     await router.isReady();
@@ -37,6 +38,7 @@ const handleSubmit = async () => {
     exercise.value.solution = mathValue.value;
     exercise.value.description = description.value;
     await exercise.value.patch()
+    show_keyboard.value = false;
     await router.push({name: 'ShowExercise', params: {id: exercise.value.id}})
 }
 
@@ -47,7 +49,7 @@ const handleSubmit = async () => {
             <template v-slot:append>
                 <CrudButton action="show" route-name="ShowExercise"/>
             </template>
-            <template v-if="store.user.id === exercise.created_by.id || store.isAdmin" v-slot:prepend>
+            <template v-if="store.user.id === exercise.created_by?.id || store.isAdmin" v-slot:prepend>
                 <CrudButton action="submit" title="exercise.buttons.submit"
                             variant="elevated" no-redirect @button-clicked="handleSubmit"/>
             </template>
@@ -73,9 +75,6 @@ const handleSubmit = async () => {
                     <v-list-item class="py-2">
                         <MathField class="mt-2" v-model="mathValue" color="primary"
                                    :label="t('exercise.solve.solution')"/>
-                        <!--                        <v-text-field v-model="mathValue" color="primary" variant="outlined"-->
-                        <!--                                      :label="t('exercise.solve.latex_solution')"-->
-                        <!--                                      math-virtual-keyboard-policy="manual"/>-->
                         <v-text-field v-model="description" color="primary" variant="outlined"
                                       :label="t('exercise.solve.description')"
                                       math-virtual-keyboard-policy="manual"/>
@@ -85,3 +84,6 @@ const handleSubmit = async () => {
         </v-card-item>
     </template>
 </template>
+<style>
+.katex { line-height: 1.75 !important; }
+</style>

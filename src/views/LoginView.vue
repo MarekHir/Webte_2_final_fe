@@ -6,30 +6,25 @@ import router from "@/router";
 import {useField, useForm} from "vee-validate";
 import * as yup from 'yup';
 import {useStateStore} from "@/stores/state";
+import {getLocaleMessagesForNamespace, onInvalidSubmit} from "@/utils";
+import {watch} from "vue";
 
-const {t} = useI18n({useScope: 'global'});
+const {t, locale} = useI18n({useScope: 'global'});
 const store = useStateStore();
+
+yup.setLocale(getLocaleMessagesForNamespace('login'))
 
 const schema = yup.object().shape({
     email: yup.string().email().required(),
-    password: yup.string().required(),
+    password: yup.string().required().min(8).max(30),
 });
 
-const {handleSubmit} = useForm({
+const {handleSubmit, validate} = useForm({
     validationSchema: schema
 });
 
 const email = useField('email');
 const password = useField('password');
-
-function onInvalidSubmit({errors}) {
-    if (errors == null || errors.length === 0)
-        return;
-
-    Object.keys(errors).forEach((field_key) => {
-        store.addAlert(errors[field_key], 'warning');
-    });
-}
 
 const onSubmit = handleSubmit(async (values) => {
     let result = await login(values);
@@ -37,6 +32,10 @@ const onSubmit = handleSubmit(async (values) => {
         await router.push({name: 'Home'});
 }, onInvalidSubmit);
 
+
+watch(locale, () => {
+    validate();
+})
 </script>
 <template>
     <v-container fluid class="fill-height">

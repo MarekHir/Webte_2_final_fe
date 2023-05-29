@@ -15,17 +15,11 @@ export const login = async (data) => {
         return false;
     }
     await api.post(`/api/${i18n.global.locale.value}/auth/login`, data).then(response => {
-        if (response.status === 200) {
             store.login(response.data.user);
             store.addAlert(response.data.message, 'success');
             result = true;
-        } else {
-            const store = useStateStore();
-            store.addAlert(response.data.message, 'error');
-            result = false;
-        }
-    }).catch(error => {
-        store.addAlert(error.message, 'error');
+        }).catch(error => {
+        store.addAlert(error.response.data.message, 'error');
         result = false;
     });
 
@@ -42,7 +36,7 @@ export const logout = async () => {
         result = true;
     }).catch(error => {
         store.logout();
-        store.addAlert(error.message, 'error');
+        store.addAlert(error.response.data.message, 'error');
         result = false;
     });
 
@@ -73,7 +67,7 @@ export const register = async (data) => {
                 result = false;
             }
         }).catch(error => {
-            store.addAlert(error.message, 'error');
+            store.addAlert(error.response.data.message, 'error');
             result = false;
         });
 

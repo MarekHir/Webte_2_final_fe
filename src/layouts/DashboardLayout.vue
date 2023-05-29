@@ -14,6 +14,7 @@ import {useStateStore} from "@/stores/state";
 import {storeToRefs} from "pinia";
 import {useTheme} from "vuetify";
 import {computed, onMounted, onUnmounted, ref} from "vue";
+import DarkModeSwitch from "@/components/DarkModeSwitch.vue";
 
 const {t} = useI18n({useScope: 'global'});
 const store = useStateStore();
@@ -115,9 +116,7 @@ const toggleDarkMode = () => {
                     <v-list-item to="/instructions" prepend-icon="mdi-help-circle-outline"
                                  :title="t('dashboard.menu.instructions')"/>
                     <ChangeLanguage list_item class="no-select"/>
-                    <v-list-item prepend-icon="mdi-theme-light-dark" :title="t(`theme_mode.${theme.global.name.value}`)"
-                                 @click="toggleDarkMode()" class="no-select">
-                    </v-list-item>
+                    <DarkModeSwitch list_item class="no-select"/>
                     <v-list-item prepend-icon="mdi-logout" @click="handleLogout"
                                  :title="t('dashboard.menu.logout')" class="no-select"/>
                 </v-list>

@@ -2,51 +2,75 @@
 
 import {useI18n} from "vue-i18n";
 import DashboardTitle from "@/components/Dashboard/DashboardTitle.vue";
-import {computed, onMounted, ref} from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 import {useRoute} from "vue-router";
 import router from "@/router";
 import CrudButton from "@/components/buttons/CrudButton.vue";
 import * as yup from "yup";
 import {useField, useForm} from "vee-validate";
-import {onInvalidSubmit} from "@/utils";
+import {getLocaleMessagesForNamespace, onInvalidSubmit} from "@/utils";
 import {createExerciseList, getExerciseList, patchExerciseList} from "@/api/exercises_lists";
 
-const {t} = useI18n({useScope: 'global'});
+const {t, locale} = useI18n({useScope: 'global'});
 const route = useRoute();
 const loading = ref(true);
 const exercise = ref(null);
-const editPage = computed(() => pageType.value === 'edit');
+const editPage = route.name === 'EditExercisesList';
 const pageType = ref('create');
 const title = computed(() => pageType.value === 'create' ? 'exercises_list.new.title' : 'exercises_list.edit.title');
 
-const create_schema = yup.object({
-    files: yup.array().required(),
-    images: yup.array().nullable(),
-    name: yup.string().required().min(5).max(30),
-    description: yup.string().required().min(10).max(150),
-    points: yup.number().required().min(0),
-    is_active: yup.boolean().nullable(),
-    initiation: yup.date().nullable(),
-    deadline: yup.date().nullable().test('is-greater', 'Initiation must be before deadline', function (value) {
-        const initiation = this.resolve(yup.ref('initiation'));
-        return !initiation || !value || initiation <= value;
-    }),
+yup.setLocale(getLocaleMessagesForNamespace('exercises_list.attr'))
+
+const create_schema = computed(() => {
+    return yup.object({
+        files: yup.array().required().length(1),
+        images: yup.array().nullable(),
+        name: yup.string().required().min(5).max(30),
+        description: yup.string().required().min(5).max(255),
+        points: yup.number().required().min(0),
+        is_active: yup.boolean().nullable(),
+        initiation: yup.date().nullable(),
+        deadline: yup.date().nullable().test('is-greater', t('exercises_list.must_be_before'), function (value) {
+            const initiation = this.resolve(yup.ref('initiation'));
+            return !initiation || !value || initiation <= value;
+        }),
+    })
 });
 
-const edit_schema = yup.object({
-    name: yup.string().required().min(5).max(30),
-    description: yup.string().required().min(10).max(150),
-    points: yup.number().required().min(0),
-    is_active: yup.boolean().nullable(),
-    initiation: yup.date().nullable(),
-    deadline: yup.date().nullable().test('is-greater', 'Initiation must be before deadline', function (value) {
-        const initiation = this.resolve(yup.ref('initiation'));
-        return !initiation || !value || initiation <= value;
-    }),
+const edit_schema = computed(() => {
+    return yup.object({
+        name: yup.string().required().min(5).max(30),
+        description: yup.string().required().min(5).max(255),
+        points: yup.number().required().min(0),
+        is_active: yup.boolean().nullable(),
+        initiation: yup.date().nullable(),
+        deadline: yup.date().nullable().test('is-greater', t('exercises_list.must_be_before'), function (value) {
+            const initiation = this.resolve(yup.ref('initiation'));
+            return !initiation || !value || initiation <= value;
+        }),
+    })
 });
 
-const {handleSubmit} = useForm({
-    validationSchema: editPage ? edit_schema : create_schema,
+onMounted(async () => {
+    loading.value = true;
+    await router.isReady();
+    if (route.name === 'EditExercisesList') {
+        // TODO: Find better way
+        exercise.value = await getExerciseList(route.params.id);
+        name.value.value = exercise.value.name;
+        description.value.value = exercise.value.description;
+        points.value.value = exercise.value.points;
+        is_active.value.value = exercise.value.is_active;
+        initiation.value.value = exercise.value.initiation;
+        deadline.value.value = exercise.value.deadline;
+        pageType.value = 'edit';
+    }
+
+    loading.value = false;
+});
+
+const {handleSubmit, validate} = useForm({
+    validationSchema: editPage ? edit_schema : create_schema
 });
 
 const files = useField('files');
@@ -60,7 +84,6 @@ const deadline = useField('deadline');
 
 const onSubmit = handleSubmit(async (values) => {
     let result;
-
 
     if (pageType.value === 'create') {
         values['is_active'] = values['is_active'] != null ? 'true' : 'false';
@@ -87,23 +110,9 @@ const onSubmit = handleSubmit(async (values) => {
         });
 }, onInvalidSubmit);
 
-onMounted(async () => {
-    loading.value = true;
-    await router.isReady();
-    if (route.name === 'EditExercisesList') {
-        // TODO: Find better way
-        exercise.value = await getExerciseList(route.params.id);
-        name.value.value = exercise.value.name;
-        description.value.value = exercise.value.description;
-        points.value.value = exercise.value.points;
-        is_active.value.value = exercise.value.is_active;
-        initiation.value.value = exercise.value.initiation;
-        deadline.value.value = exercise.value.deadline;
-        pageType.value = 'edit';
-    }
-
-    loading.value = false;
-});
+watch(locale, () => {
+    validate();
+})
 </script>
 <template>
     <template v-if="!loading">

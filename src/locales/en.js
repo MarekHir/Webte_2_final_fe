@@ -8,6 +8,7 @@ import exercises_list from '@/locales/views/exercises_lists/en'
 import exercise from '@/locales/views/exercise/en'
 import user from '@/locales/user/en';
 import home from '@/locales/views/home/en';
+import validation from '@/locales/validation/en';
 
 export default {
     login: login,
@@ -52,6 +53,7 @@ export default {
     delete_modal: {
         title: 'Are you sure you want to delete this item?',
     },
+    validation: validation,
     teacher: teacher,
     $vuetify: {
         ...en,

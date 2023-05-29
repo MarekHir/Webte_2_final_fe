@@ -1,14 +1,17 @@
 <script setup>
 import {useStateStore} from "@/stores/state";
 import {useI18n} from "vue-i18n";
-import {onMounted, ref, watch} from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 import ShowCard from "@/components/ShowCard.vue";
 import MathField from "@/components/MathField.vue";
+import {useField, useForm} from "vee-validate";
+import * as yup from "yup";
+import {setLocale} from "yup";
+import {getLocaleMessagesForNamespace, onInvalidSubmit} from "@/utils";
 
 const store = useStateStore();
-const {t} = useI18n({useScope: 'global'});
+const {t, locale} = useI18n({useScope: 'global'});
 const emit = defineEmits(['close', 'refresh']);
-const points = ref(0);
 const props = defineProps({
     dialog: {
         type: Boolean,
@@ -21,19 +24,31 @@ const props = defineProps({
     }
 })
 
+yup.setLocale(getLocaleMessagesForNamespace('exercise.change_points_modal'))
+
+const schema = computed(() => { return yup.object({
+    points: yup.number().required().min(0).max(props.exercise.exercises_lists.points)
+})});
+
+const {handleSubmit, validate} = useForm({
+    validationSchema: schema,
+});
+
+const points = useField('points');
+
+
 onMounted(() => {
-    points.value = props.exercise.points;
+    points.value.value = props.exercise.points;
 });
 
 const dialog = ref(props.dialog);
 
-// TODO: yup validate
-const updateExercise = async () => {
-    props.exercise.points = points.value;
+const updateExercise = handleSubmit(async (values) => {
+    props.exercise.points = values.points;
     await props.exercise.patch();
     emit('refresh');
     dialog.value = false;
-}
+}, onInvalidSubmit)
 
 
 watch(() => props.dialog, (newVal) => {
@@ -41,7 +56,7 @@ watch(() => props.dialog, (newVal) => {
 })
 
 watch(() => props.exercise, (newVal) => {
-    points.value = newVal.points;
+    points.value.value = newVal.points;
 })
 
 watch(() => dialog.value, (newVal) => {
@@ -49,7 +64,9 @@ watch(() => dialog.value, (newVal) => {
         emit('close');
     }
 })
-
+watch(locale, () => {
+    validate();
+})
 </script>
 <template>
     <v-dialog
@@ -80,11 +97,11 @@ watch(() => dialog.value, (newVal) => {
             </v-card-text>
             <v-card-item>
                 <v-text-field
-                        v-model="points"
+                        v-model="points.value.value"
                         color="primary"
                         :label="t('exercise.change_points_modal.points')"
-                        type="number"
                         variant="outlined"
+                        :error-messages="points.errorMessage.value"
                         class="w-100 py-2"/>
             </v-card-item>
             <v-card-item>

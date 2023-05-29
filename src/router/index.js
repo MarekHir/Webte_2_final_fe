@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import {useStateStore} from "@/stores/state";
 import {policyManager} from "@/utils";
 import i18n from "@/config/i18n";
+import {storeToRefs} from "pinia";
 
 
 const router = createRouter({
@@ -104,13 +105,16 @@ const router = createRouter({
                     name: 'SolveExercise',
                     component: () => import('../views/exercises/SolveView.vue'),
                     meta: {
-                        allowed: ['student'],
+                        allowed: ['owner'],
                     }
                 },
                 {
                     path: ':id',
                     name: 'ShowExercise',
                     component: () => import('../views/exercises/ShowView.vue'),
+                    meta: {
+                        allowed: ['teacher', 'owner'],
+                    }
                 }
             ],
         },
@@ -218,6 +222,9 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
     const store = useStateStore();
     const {t} = i18n.global;
+    const {show_keyboard, menuHidden} = storeToRefs(store)
+    show_keyboard.value = false;
+    menuHidden.value = false;
 
     let pageAuth = to.meta.auth !== undefined ? to.meta.auth : true;
     let pageAllowed = to.meta.allowed !== undefined ? to.meta.allowed : false;

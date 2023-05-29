@@ -123,6 +123,6 @@ const goToExercises = async () => {
 }
 
 .link:hover {
-    color: v-bind('theme.current.value.colors["secondary"]');
+    color: v-bind('theme.current.value.colors["secondary-darken-1"]');
 }
 </style>

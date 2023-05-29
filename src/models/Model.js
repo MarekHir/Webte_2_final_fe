@@ -10,7 +10,6 @@ export default class Model extends BaseModel {
         if (this.created_at != null) {
             this.created_at = new Date(this.created_at);
         }
-
         if (this.updated_at != null) {
             this.updated_at = new Date(this.updated_at);
         }

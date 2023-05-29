@@ -17,3 +17,15 @@ npm install
 ```sh
 npm run dev
 ```
+
+## Build for production
+
+### Configure some values before build
+
+In src/config/general.js you can configure api url if its not on root path as api or if its on different origin
+
+### Build
+
+```sh
+npm run build
+```

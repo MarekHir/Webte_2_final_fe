@@ -40,13 +40,13 @@ const headers = [
         sortable: true,
     }, {
         title: 'exercises_list.attr.deadline',
-        key: 'deadline',
+        key: 'deadlineDate',
         trans_null: true,
         default: 'not_set',
         sortable: true,
     }, {
         title: 'exercises_list.attr.initiation',
-        key: 'initiation',
+        key: 'initiationDate',
         trans_null: true,
         default: 'not_set',
         sortable: true,

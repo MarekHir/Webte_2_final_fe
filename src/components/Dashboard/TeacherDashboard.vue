@@ -83,6 +83,7 @@ onMounted(() => {
     exercises.value = props.data.exercises.map(ex => new Exercise(ex));
     show_more.value.exercises = exercises.value.length === 3;
     statistics.value = props.data.statistics
+    statistics.value.lists = statistics.value.lists.filter(list => list.count > 0)
     colors.value = Object.keys(vuetify_colors).map(color => vuetify_colors[color].base);
     loaded.value = true;
 })
@@ -92,7 +93,7 @@ const general_options = computed(() => {
         responsive: true,
         plugins: {
             legend: {
-                display: true,
+                display: false,
                 position: 'top',
                 labels: {
                     color: theme.global.current.value.colors["surface-variant"],
@@ -107,16 +108,15 @@ const general_options = computed(() => {
 
 const generated_graph = computed(() => {
     return {
-        labels: statistics.value.lists.filter(list => list.count > 0).map(list => list.name),
+        labels: statistics.value.lists.map(list => list.name),
         datasets: [
             {
-                data: statistics.value.lists.filter(list => list.count > 0).map(list => list.count),
-                backgroundColor: statistics.value.lists.filter(list => list.count > 0).map(
+                data: statistics.value.lists.map(list => list.count),
+                backgroundColor: statistics.value.lists.map(
                     (_, index) => colors.value[index * 5 % colors.value.length]),
                 borderColor: theme.global.current.value.colors.background,
                 datalabels: {
-                    color: statistics.value.lists.filter(list => list.count > 0)
-                        .map(_ => theme.global.current.value.colors["on-background"]),
+                    color: statistics.value.lists.map(_ => theme.global.current.value.colors["on-background"]),
                 }
             },
         ],
@@ -125,16 +125,15 @@ const generated_graph = computed(() => {
 
 const average_graph = computed(() => {
     return {
-        labels: statistics.value.lists.filter(list => list.count > 0).map(list => list.name),
+        labels: statistics.value.lists.map(list => list.name),
         datasets: [
             {
-                data: statistics.value.lists.filter(list => list.count > 0).map(list => list.average),
-                backgroundColor: statistics.value.lists.filter(list => list.count > 0).map(
-                    (_, index) => colors.value[(colors.value.length + 1 - index * 5) % colors.value.length]),
+                data: statistics.value.lists.map(list => list.average),
+                backgroundColor: statistics.value.lists.map(
+                    (_, index) => colors.value[index * 8 % colors.value.length]),
                 borderColor: theme.global.current.value.colors.background,
                 datalabels: {
-                    color: statistics.value.lists.filter(list => list.count > 0)
-                        .map(_ => theme.global.current.value.colors["on-background"]),
+                    color: statistics.value.lists.map(_ => theme.global.current.value.colors["on-background"]),
                 }
             },
         ],
@@ -222,28 +221,33 @@ const goToExerciseShow = async (id) => {
 <template>
     <v-card-item v-if="loaded" class="pt-0 mt-0">
         <ShowCard class="mt-3 mb-2" title="home.teacher.graph.title">
-            <v-row>
-                <v-col cols="12" md="4" class="d-flex flex-column justify-center align-center">
-                    <h3 class="text-h6">{{t('home.teacher.graph.generated_title')}}</h3>
-                    <DoughnutChart :height="200" :width="300" :plugins="[datalabels]" :options="general_options"
-                                   :chartData="generated_graph"/>
-                </v-col>
-                <v-col cols="12" md="4" class="d-flex flex-column justify-center align-center">
-                    <h3 class="text-h6">{{t('home.teacher.graph.average_title')}}</h3>
-                    <DoughnutChart :height="200" :width="300" :plugins="[datalabels]" :options="count_options"
-                                   :chartData="average_graph"/>
-                </v-col>
-                <v-col cols="12" md="4" class="d-flex flex-column justify-center align-center">
-                    <h3 class="text-h6">{{t('home.teacher.graph.top_students')}}</h3>
+            <v-row v-if="statistics.lists?.length > 0 || statistics.top_students?.length > 0">
+                <template v-if="statistics.lists?.length > 0">
+                    <v-col cols="12" md="4" class="d-flex flex-column justify-center align-center">
+                        <h3 class="text-h6">{{ t('home.teacher.graph.generated_title') }}</h3>
+                        <DoughnutChart :height="200" :width="300" :plugins="[datalabels]" :options="general_options"
+                                       :chartData="generated_graph"/>
+                    </v-col>
+                    <v-col cols="12" md="4" class="d-flex flex-column justify-center align-center">
+                        <h3 class="text-h6">{{ t('home.teacher.graph.average_title') }}</h3>
+                        <DoughnutChart :height="200" :width="300" :plugins="[datalabels]" :options="general_options"
+                                       :chartData="average_graph"/>
+                    </v-col>
+                </template>
+                <v-col v-if="statistics.top_students?.length > 0" cols="12" md="4" class="d-flex flex-column justify-center align-center">
+                    <h3 class="text-h6">{{ t('home.teacher.graph.top_students') }}</h3>
                     <BarChart :height="200" :width="400" :plugins="[datalabels]" :options="points_options"
                               :chartData="points_graph"/>
                 </v-col>
             </v-row>
+            <h3 v-else class="text-h6 text-center">{{ t('home.teacher.graph.none') }}</h3>
         </ShowCard>
         <v-row>
             <v-col cols="12" md="6">
                 <ShowCard class="mt-3 mb-2" title="home.teacher.exercises_lists.title">
-                    <CustomTable :headers="exercises_lists_headers" :data="exercises_lists" @on-click="goToListShow"/>
+                    <CustomTable v-if="exercises_lists.length > 0" :headers="exercises_lists_headers"
+                                 :data="exercises_lists" @on-click="goToListShow"/>
+                    <h3 v-else class="text-h6 text-center">{{ t('home.teacher.exercises_lists.none') }}</h3>
                     <h3 v-if="show_more.exercises_lists" class="text-h6 text-center link"
                         @click="goToLists">
                         {{ t('home.teacher.exercises_lists.more') }}</h3>
@@ -251,7 +255,9 @@ const goToExerciseShow = async (id) => {
             </v-col>
             <v-col cols="12" md="6">
                 <ShowCard class="mt-3 mb-2" title="home.teacher.exercises.title">
-                    <CustomTable :headers="exercises_headers" :data="exercises" @on-click="goToExerciseShow"/>
+                    <CustomTable v-if="exercises.length > 0" :headers="exercises_headers" :data="exercises"
+                                 @on-click="goToExerciseShow"/>
+                    <h3 v-else class="text-h6 text-center">{{ t('home.teacher.exercises.none') }}</h3>
                     <h3 v-if="show_more.exercises" class="text-h6 text-center link"
                         @click="goToExercises">
                         {{ t('home.teacher.exercises.more') }}</h3>
@@ -267,6 +273,6 @@ const goToExerciseShow = async (id) => {
 }
 
 .link:hover {
-    color: v-bind('theme.current.value.colors["secondary"]');
+    color: v-bind('theme.current.value.colors["secondary-darken-1"]');
 }
 </style>

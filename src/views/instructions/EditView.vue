@@ -13,10 +13,10 @@ import {storeToRefs} from "pinia";
 import CrudButton from "@/components/buttons/CrudButton.vue";
 import * as yup from "yup";
 import {useField, useForm} from "vee-validate";
-import {onInvalidSubmit} from "@/utils";
+import {getLocaleMessagesForNamespace, onInvalidSubmit} from "@/utils";
 import InstructionsDarkModeSwitch from "@/components/InstructionsDarkModeSwitch.vue";
 
-const {t} = useI18n({useScope: 'global'});
+const {t, locale} = useI18n({useScope: 'global'});
 const store = useStateStore();
 const route = useRoute();
 const loading = ref(true);
@@ -37,14 +37,18 @@ const user_types = [
     {title: t('instructions.for_user_type.student'), value: 'student'},
 ]
 
-const schema = yup.object({
-    name: yup.string().required().min(5).max(30),
-    for_user_type: yup.string().required(),
-    description: yup.string().required().max(10).max(150),
-    markdown: yup.string().required(),
+yup.setLocale(getLocaleMessagesForNamespace('instructions.attr'))
+
+const schema = computed(() => {
+    return yup.object({
+        name: yup.string().required().min(5).max(30),
+        for_user_type: yup.string().required().oneOf(user_types.map((type) => type.value), t('instructions.for_user_type.error')),
+        description: yup.string().required().min(10).max(64),
+        markdown: yup.string().required(),
+    })
 });
 
-const {handleSubmit} = useForm({
+const {handleSubmit, validate} = useForm({
     validationSchema: schema
 });
 
@@ -93,6 +97,9 @@ onMounted(async () => {
     }, 100);
 });
 
+watch(locale, () => {
+    validate();
+})
 const hideMenu = () => {
     menuHidden.value = pageFullscreen.value || fullscreen.value;
 }
@@ -145,7 +152,7 @@ watch(fullscreen, () => {
                     </v-row>
                     <v-text-field
                             v-model="description.value.value"
-                            class="ma-auto"
+                            class="mx-auto my-1"
                             variant="outlined"
                             color="primary"
                             :label="t('instructions.attr.description')"

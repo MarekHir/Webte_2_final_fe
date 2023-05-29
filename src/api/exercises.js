@@ -21,7 +21,7 @@ export const getDashboard = async () => {
     const store = useStateStore();
     let result = {};
 
-    await api.get(`/api/${i18n.global.locale.value}/dashboard/teacher`)
+    await api.get(`/api/${i18n.global.locale.value}/dashboard/${store.user.role}`)
         .then((response) => {
             result = response.data;
         }).catch((error) => { // TODO error handling

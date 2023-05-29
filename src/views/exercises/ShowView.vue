@@ -32,7 +32,6 @@ const pointsFields = [
     {title: 'exercises_list.attr.points', key: 'maxPoints'},
     {title: 'exercise.attr.points', key: 'points'}]
 
-// TODO: Add loading everywhere
 onMounted(async () => {
     loading.value = true;
     await router.isReady();
@@ -68,13 +67,13 @@ const handleDelete = async () => {
                 </template>
             </template>
             <template v-slot:prepend>
-                <CrudButton v-if="(store.user.id === exercise.created_by.id || store.isAdmin) && exercise.canBeSolved"
+                <CrudButton v-if="(store.user.id === exercise.created_by?.id || store.isAdmin) && exercise.canBeSolved"
                             action="custom" title="exercise.buttons.solve" color="primary"
                             variant="elevated"
                             route-name="SolveExercise" :id="$props.id"/>
                 <CrudButton v-if="store.isTeacher" action="show" title="exercise.student.show_student"
                             route-name="ShowStudents"
-                            :id="exercise.created_by.id"/>
+                            :id="exercise.created_by?.id"/>
             </template>
         </DashboardTitle>
         <DashboardSubtitle

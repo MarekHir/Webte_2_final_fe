@@ -64,13 +64,16 @@ const solved_headers = ref([
 const assigned_exercises = ref([])
 const solved_exercises = ref([])
 const statistics = ref([])
+const show_more = ref({assigned: false, solved: false})
 const loaded = ref(false);
 const theme = useTheme();
 const {t} = useI18n({useScope: 'global'});
 
 onMounted(() => {
     assigned_exercises.value = props.data.assigned.map(ex => new Exercise(ex));
+    show_more.value.assigned = assigned_exercises.value.length === 3;
     solved_exercises.value = props.data.solved.map(ex => new Exercise(ex));
+    show_more.value.solved = solved_exercises.value.length === 3;
     statistics.value = props.data.statistics;
     statistics.value.total_generated = Number.parseInt(statistics.value.total_generated);
     statistics.value.total_solved = Number.parseInt(statistics.value.total_solved);
@@ -185,37 +188,80 @@ const points_options = computed(() => {
     }
 });
 
+
+const isCountGraph = computed(() => {
+    return statistics.value.total_generated > 0 || statistics.value.total_solved > 0;
+})
+
+const isPointsGraph = computed(() => {
+    return statistics.value.earned_point > 0 || statistics.value.total_points > 0 ||
+        statistics.value.average_points > 0 || statistics.value.total_average > 0
+})
+
 const goToShow = async (id) => {
     await router.push({name: 'ShowExercise', params: {id: id}}).catch(() => {
         console.log('Error while routing to ShowExercise') // TODO: Add error handling
+    });
+}
+
+const goToAssigned = async () => {
+    await router.push({name: 'AssignedExercises'}).catch(() => {
+        console.log('Error while routing to AssignedExercises') // TODO: Add error handling
+    });
+}
+
+const goToSolved = async () => {
+    await router.push({name: 'SolvedExercises'}).catch(() => {
+        console.log('Error while routing to SolvedExercises') // TODO: Add error handling
     });
 }
 </script>
 <template>
     <v-card-item v-if="loaded" class="pt-0 mt-0">
         <ShowCard class="mt-3 mb-2" title="home.student.graph.title">
-            <v-row>
-                <v-col cols="12" md="6" class="d-flex justify-center align-center">
+            <v-row v-if="isPointsGraph || isCountGraph">
+                <v-col v-if="isPointsGraph" cols="12" md="6" class="d-flex justify-center align-center">
                     <DoughnutChart :height="200" :width="300" :plugins="[datalabels]" :options="count_options"
                                    :chartData="count_graph"/>
                 </v-col>
-                <v-col cols="12" md="6" class="d-flex justify-center align-center">
+                <v-col v-if="isCountGraph" cols="12" md="6" class="d-flex justify-center align-center">
                     <BarChart :height="200" :width="400" :plugins="[datalabels]" :options="points_options"
                               :chartData="points_graph"/>
                 </v-col>
             </v-row>
+            <h3 v-else class="text-h6 text-center">{{ t('home.student.graph.none') }}</h3>
         </ShowCard>
         <v-row>
             <v-col cols="12" md="6">
                 <ShowCard class="mt-3 mb-2" title="home.student.assigned.title">
-                    <CustomTable :headers="assigned_headers" :data="assigned_exercises" @on-click="goToShow"/>
+                    <CustomTable v-if="assigned_exercises.length > 0" :headers="assigned_headers"
+                                 :data="assigned_exercises" @on-click="goToShow"/>
+                    <h3 v-else class="text-h6 text-center">{{ t('home.student.assigned.none') }}</h3>
+                    <h3 v-if="show_more.assigned" class="text-h6 text-center link"
+                        @click="goToAssigned">
+                        {{ t('home.student.assigned.more') }}</h3>
                 </ShowCard>
             </v-col>
             <v-col cols="12" md="6">
                 <ShowCard class="mt-3 mb-2" title="home.student.solved.title">
-                    <CustomTable :headers="solved_headers" :data="solved_exercises" @on-click="goToShow"/>
+                    <CustomTable v-if="solved_exercises.length > 0" :headers="solved_headers"
+                                 :data="solved_exercises" @on-click="goToShow"/>
+                    <h3 v-else class="text-h6 text-center">{{ t('home.student.solved.none') }}</h3>
+                    <h3 v-if="show_more.solved" class="text-h6 text-center link"
+                        @click="goToSolved">
+                        {{ t('home.student.solved.more') }}</h3>
                 </ShowCard>
             </v-col>
         </v-row>
     </v-card-item>
 </template>
+<style scoped>
+.link {
+    color: v-bind('theme.current.value.colors["primary"]');
+    cursor: pointer;
+}
+
+.link:hover {
+    color: v-bind('theme.current.value.colors["secondary-darken-1"]');
+}
+</style>

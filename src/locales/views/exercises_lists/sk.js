@@ -10,7 +10,9 @@ export default {
     },
     edit: {
         title: 'Upraviť zoznam cvičení',
+        date_hint: 'Ak nechcete stanoviť obmedzenie, nechajte prázdne alebo kliknite na ikonu vymazať vpravo',
     },
+    must_be_before: 'musí byť pred dátumom Inicializácie',
     attr: {
         name: 'Meno',
         description: 'Popis',

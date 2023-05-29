@@ -3,6 +3,7 @@ export default {
         all: 'All',
         student: 'Student',
         teacher: 'Teacher',
+        error: 'You must select at least one option.',
     },
     title: {
         edit: 'Edit instruction',
@@ -28,7 +29,7 @@ export default {
         created_at: 'Generated at',
         updated_at: 'Updated at',
         description: 'Description',
-        markdown: 'Markdown',
+        markdown: 'Instruction content',
         for_user_type: 'Indented for',
         created_by: 'Created by',
         updated_by: 'Updated by',

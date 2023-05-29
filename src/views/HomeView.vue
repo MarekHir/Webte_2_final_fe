@@ -22,9 +22,8 @@ onMounted(async () => {
 <template>
     <DashboardTitle title_key="home.title" class="mb-0 pb-0"/>
     <template v-if="loaded">
-        <StudentDashboard v-if="store.isStudent" :data="data"/>
+        <AdminDashboard v-if="store.isAdmin" :data="data"/>
         <TeacherDashboard v-else-if="store.isTeacher" :data="data"/>
-        <AdminDashboard v-else-if="store.isAdmin" :data="data"/>
-        <!--        <AdminDashboard :data="data"/>-->
+        <StudentDashboard v-else-if="store.isStudent" :data="data"/>
     </template>
 </template>
