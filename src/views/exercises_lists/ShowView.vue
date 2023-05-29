@@ -10,8 +10,9 @@ import DashboardSubtitle from "@/components/Dashboard/DashboardSubtitle.vue";
 import CrudButton from "@/components/buttons/CrudButton.vue";
 import DeleteModal from "@/components/Modals/DeleteModal.vue";
 import {fullName} from "@/utils";
-import {deleteExerciseList, getExerciseList} from "@/api/exercises_lists";
+import {deleteExerciseList} from "@/api/exercises_lists";
 import ShowCard from "@/components/ShowCard.vue";
+import ExercisesList from "@/models/ExercisesList";
 
 
 const {t} = useI18n({useScope: 'global'});
@@ -35,12 +36,12 @@ const points_card = [
 const deadlines_card = [
     {
         title: 'exercises_list.attr.initiation',
-        key: 'initiation',
+        key: 'initiationDate',
         optional: 'not_set',
     },
     {
         title: 'exercises_list.attr.deadline',
-        key: 'deadline',
+        key: 'deadlineDate',
         optional: 'not_set',
     }
 ]
@@ -48,7 +49,7 @@ const deadlines_card = [
 onMounted(async () => {
     loading.value = true;
     await router.isReady();
-    exercise.value = await getExerciseList(route.params.id);
+    exercise.value = await ExercisesList.find(route.params.id);
     loading.value = false;
 });
 

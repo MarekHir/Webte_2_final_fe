@@ -36,11 +36,11 @@ export default class Exercise extends Model {
     }
 
     get startDate() {
-        return this.exercises_lists_sections?.initiation?.toLocaleString();
+        return this.exercises_lists?.initiationDate;
     }
 
     get endDate() {
-        return this.exercises_lists_sections?.deadline?.toLocaleString();
+        return this.exercises_lists?.deadlineDate;
     }
 
     get maxPoints() {

@@ -61,8 +61,8 @@ onMounted(async () => {
         description.value.value = exercise.value.description;
         points.value.value = exercise.value.points;
         is_active.value.value = exercise.value.is_active;
-        initiation.value.value = exercise.value.initiation;
-        deadline.value.value = exercise.value.deadline;
+        initiation.value.value = exercise.value.initiation ? exercise.value.initiation.split('.')[0] : null;
+        deadline.value.value = exercise.value.deadline ? exercise.value.deadline.split('.')[0] : null;
         pageType.value = 'edit';
     }
 

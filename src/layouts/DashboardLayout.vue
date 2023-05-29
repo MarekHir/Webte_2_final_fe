@@ -60,7 +60,7 @@ const toggleDarkMode = () => {
 
 <template>
     <v-layout :full-height="true" v-if="store.isAuthenticated">
-        <v-navigation-drawer v-model:temporary="menuHidden" rail expand-on-hover permanent class="">
+        <v-navigation-drawer v-model:temporary="menuHidden" :rail="true" expand-on-hover :permanent="!menuHidden" class="">
             <v-list>
                 <v-list-item
                         :to="{name: 'UserProfile'}"
