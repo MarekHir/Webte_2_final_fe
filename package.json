@@ -16,6 +16,7 @@
     "chart.js": "^3.9.1",
     "chartjs-plugin-datalabels": "^2.2.0",
     "date-fns": "^2.30.0",
+    "dotenv": "^16.3.1",
     "katex": "^0.16.7",
     "lodash": "^4.17.21",
     "mathlive": "^0.94.0",
