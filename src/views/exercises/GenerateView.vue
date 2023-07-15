@@ -18,13 +18,13 @@ const route = useRoute();
 const exercises_lists = ref([])
 const selected_exercises = ref([])
 const alert_color = ref('')
+const page = ref({current: 1, max_page: 1, total: 0, per_page: 9});
 
 onMounted(async () => {
     loading.value = true;
-    exercises_lists.value = (await ExercisesList.where({is_active: true}).get()).data
-        .map(exercises_list => new ExercisesList(exercises_list));
+    await fetchData();
     await router.isReady();
-    if (exercises_lists.value.length === 0) {
+    if (page.value.total === 0) {
         store.addAlert(t('exercise.generate.no_exercises_lists'), 'info')
         await router.push({name: 'Home'}).catch(() => {
             console.log('Error while routing to Home') // TODO: Add error handling
@@ -32,6 +32,16 @@ onMounted(async () => {
     }
     loading.value = false;
 });
+
+const fetchData = async () => {
+    let result = await ExercisesList.where({is_active: true,})
+        .page(page.value.current).limit(page.value.per_page).get();
+    exercises_lists.value = result.data
+        .map(exercises_list => new ExercisesList(exercises_list));
+    if (page.value.current !== result.current_page) page.value.current = result.current_page;
+    page.value.max_page = result.last_page;
+    page.value.total = result.total;
+}
 
 const onSubmit = async () => {
     if (selected_exercises.value.length === 0) {
@@ -48,6 +58,10 @@ const onSubmit = async () => {
 
 watch(selected_exercises, () => {
     alert_color.value = ''
+});
+
+watch(() => page.value.current, async () => {
+    await fetchData();
 });
 
 </script>
@@ -69,7 +83,7 @@ watch(selected_exercises, () => {
             <h5 class="text-center text-h5">{{ t('exercise.generate.tooltip') }}</h5>
         </v-card-subtitle>
         <v-divider class="mt-4"/>
-        <v-card-item>
+        <v-card-item class="pb-8">
             <v-container>
                 <v-item-group v-model="selected_exercises" mandatory multiple>
                     <v-container class="w-75">
@@ -91,7 +105,19 @@ watch(selected_exercises, () => {
                         </v-item>
                     </v-container>
                 </v-item-group>
+                <v-pagination v-if="page.per_page < page.total"
+                              v-model="page.current"
+                              :length="page.max_page"
+                class="pagination_bottom mb-4 w-100"/>
             </v-container>
         </v-card-item>
     </template>
 </template>
+<style>
+.pagination_bottom {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+</style>
