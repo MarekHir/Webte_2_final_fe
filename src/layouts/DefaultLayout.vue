@@ -10,11 +10,15 @@ export default defineComponent({
 import {computed} from "vue";
 import ChangeLanguage from "@/components/ChangeLanguage.vue";
 import DarkModeSwitch from "@/components/DarkModeSwitch.vue";
+import PortfolioTooltip from "@/components/PortfolioTooltip.vue";
 
 const location = computed(() => {
     return 'Login';
 
 });
+const portfolio = computed(() => {
+    return import.meta.env.VITE_PORTFOLIO === 'true' || false;
+})
 </script>
 
 <template>
@@ -25,6 +29,7 @@ const location = computed(() => {
                 <DarkModeSwitch/>
             </v-container>
         </v-app-bar>
+        <PortfolioTooltip v-if="portfolio"/>
         <v-main style="margin-top: -48px;">
             <slot></slot>
         </v-main>

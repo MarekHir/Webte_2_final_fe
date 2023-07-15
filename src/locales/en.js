@@ -9,6 +9,7 @@ import exercise from '@/locales/views/exercise/en'
 import user from '@/locales/user/en';
 import home from '@/locales/views/home/en';
 import validation from '@/locales/validation/en';
+import portfolio_tooltip from '@/locales/components/portfolio_tooltip/en'
 
 export default {
     login: login,
@@ -55,6 +56,9 @@ export default {
     },
     validation: validation,
     teacher: teacher,
+    components: {
+        portfolio_tooltip: portfolio_tooltip
+    },
     $vuetify: {
         ...en,
     }
