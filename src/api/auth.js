@@ -1,6 +1,7 @@
 import api from "@/config/axios";
 import {useStateStore} from "@/stores/state";
 import i18n from "@/config/i18n";
+import router from "@/router";
 
 export const login = async (data) => {
     const store = useStateStore();
@@ -82,4 +83,9 @@ export const getUser = async () => {
     }).catch(error => {
         store.logout();
     });
+
+    if(!store.isAuthenticated) {
+        await router.isReady();
+        await router.push({name: 'Login'});
+    }
 }
