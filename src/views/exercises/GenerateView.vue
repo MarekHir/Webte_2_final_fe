@@ -35,7 +35,7 @@ onMounted(async () => {
 
 const fetchData = async () => {
     let result = await ExercisesList.where({is_active: true,})
-        .page(page.value.current).limit(page.value.per_page).get();
+        .page(page.value.current).limit(page.value.per_page).orderBy('-updated_at').get();
     exercises_lists.value = result.data
         .map(exercises_list => new ExercisesList(exercises_list));
     if (page.value.current !== result.current_page) page.value.current = result.current_page;
